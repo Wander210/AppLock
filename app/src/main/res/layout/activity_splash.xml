@@ -1,83 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/splash"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".SplashActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/splash"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@null"
-        android:scaleType="centerCrop"
-        android:src="@drawable/splash_screen" />
+        tools:context=".presentations.splash.SplashActivity">
 
-    <ImageView
-        android:id="@+id/splashIconiv"
-        android:layout_width="@dimen/_140sdp"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/_76sdp"
-        android:contentDescription="@null"
-        android:src="@drawable/applock_icon"
-        app:layout_constraintDimensionRatio="304:304"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            android:src="@drawable/splash_screen" />
 
-    <ImageView
-        android:id="@+id/splashNameiv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="@dimen/_64sdp"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:background="@drawable/applock_name"
-        android:contentDescription="@null"
-        app:layout_constraintDimensionRatio="424:56"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splashIconiv" />
+        <ImageView
+            android:id="@+id/splashIconiv"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_76sdp"
+            android:contentDescription="@null"
+            android:src="@drawable/applock_icon"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/loadingtv"
-        app:layout_constraintTop_toBottomOf="@+id/splashNameiv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Please wait, loading....."
-        android:contentDescription="@null"
-        android:textSize="@dimen/_18ssp"
-        android:fontFamily="@font/inter_medium"
-        android:textColor="@color/white"
-        android:layout_marginTop="@dimen/_175sdp"/>
+        <ImageView
+            android:id="@+id/splashNameiv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/_64sdp"
+            android:layout_marginTop="@dimen/_90sdp"
+            android:background="@drawable/applock_name"
+            android:contentDescription="@null"
+            app:layout_constraintDimensionRatio="424:56"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/splashIconiv" />
 
-    <ProgressBar
-        android:id="@+id/Loadingpb"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/_10sdp"
-        android:indeterminate="true"
-        app:layout_constraintTop_toBottomOf="@id/loadingtv"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginHorizontal="@dimen/_30sdp"
-        android:layout_marginTop="@dimen/_14sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:indeterminateTint="@color/white"/>
+        <TextView
+            android:id="@+id/loadingtv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:contentDescription="@null"
+            android:fontFamily="@font/inter_medium"
+            android:text="Please wait, loading....."
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toTopOf="@+id/Loadingpb"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/adstv"
-        app:layout_constraintTop_toBottomOf="@+id/Loadingpb"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="(This action may contain advertisements)"
-        android:contentDescription="@null"
-        android:textSize="@dimen/_12ssp"
-        android:fontFamily="@font/inter_regular"
-        android:textColor="@color/white"
-        android:layout_marginTop="@dimen/_10sdp"/>
+        <ProgressBar
+            android:id="@+id/Loadingpb"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_30sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/adstv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/adstv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_35sdp"
+            android:contentDescription="@null"
+            android:fontFamily="@font/inter_regular"
+            android:text="(This action may contain advertisements)"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
