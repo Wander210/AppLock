@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">AppLock2.0</string>
+    <string name="please_wait_loading">Please wait, loading.....</string>
+    <string name="this_action_may_contain_advertisements">(This action may contain advertisements)</string>
+    <string name="languages">Languages</string>
+    <string name="english">English</string>
+    <string name="korean">Korean</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="hindi">Hindi</string>
+    <string name="french">French</string>
+    <string name="italian">Italian</string>
+    <string name="polish">Polish</string>
+    <string name="german">German</string>
+    <string name="japanese">Japanese</string>
+    <string name="spanish">Spanish</string>
 </resources>
