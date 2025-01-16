@@ -1,4 +1,4 @@
-package com.giang.applock20.presentations.splash
+package com.giang.applock20.screen.splash
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.giang.applock20.R
 import com.giang.applock20.databinding.ActivitySplashBinding
-import com.giang.applock20.presentations.language.LanguageActivity
+import com.giang.applock20.screen.language.LanguageActivity
 
 class SplashActivity : AppCompatActivity() {
 

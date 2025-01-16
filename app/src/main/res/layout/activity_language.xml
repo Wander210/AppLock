@@ -7,12 +7,13 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentations.language.LanguageActivity">
+        tools:context=".screen.language.LanguageActivity">
 
         <ImageView
             android:id="@+id/languageBg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             android:src="@drawable/language_screen" />
 
 
@@ -29,7 +30,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_60sdp"
                 android:background="@drawable/titlebar_bg"
-                android:layout_marginTop="@dimen/_15sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -38,7 +38,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/languages"
                 android:textColor="@color/white"
@@ -48,10 +47,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/btnDone"
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_15sdp"
                 android:src="@drawable/ic_check"
                 android:clickable="true"
                 android:focusable="true"
@@ -66,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_90sdp"
+            android:layout_marginTop="@dimen/_70sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             android:scrollbars="vertical"/>
 
