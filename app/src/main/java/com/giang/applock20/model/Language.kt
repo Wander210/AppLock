@@ -4,5 +4,5 @@ data class Language(
     val id: Int,
     val name: String,
     val icon: Int,
-    var isSelected: Boolean
+    val locale: String
 )

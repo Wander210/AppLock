@@ -14,4 +14,6 @@
     <string name="german">German</string>
     <string name="japanese">Japanese</string>
     <string name="spanish">Spanish</string>
+    <string name="fingerprint_unlock">Fingerprint unlock</string>
+    <string name="unlock_status">Not enabled. Do you want to enable it?</string>
 </resources>
