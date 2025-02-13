@@ -14,6 +14,12 @@
     <string name="german">German</string>
     <string name="japanese">Japanese</string>
     <string name="spanish">Spanish</string>
-    <string name="fingerprint_unlock">Fingerprint unlock</string>
-    <string name="unlock_status">Not enabled. Do you want to enable it?</string>
+    <string name="fingerprint_unlock" translatable="false">Fingerprint unlock</string>
+    <string name="unlock_status" translatable="false">Not enabled. Do you want to enable it?</string>
+
+    <string name="lib_name" translatable="false">PatternLockView</string>
+    <string name="message_pattern_dot_added" translatable="false">Dot added to pattern</string>
+    <string name="message_pattern_started" translatable="false">Pattern drawing started</string>
+    <string name="message_pattern_detected" translatable="false">Pattern drawing completed</string>
+    <string name="message_pattern_cleared" translatable="false">Pattern cleared</string>
 </resources>
