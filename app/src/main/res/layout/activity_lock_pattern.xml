@@ -5,13 +5,74 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     tools:context=".screen.lock_pattern.LockPatternActivity">
 
+    <ImageView
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="95 : 13"
+        android:src="@drawable/text_app_lock"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_25sdp"
+        android:contentDescription="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_security_question"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1 : 1"
+        android:src="@drawable/ic_security_question"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:padding="@dimen/_5sdp"
+        android:contentDescription="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_outlined"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1 : 1"
+        android:src="@drawable/ic_outlined"
+        android:padding="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:contentDescription="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iv_security_question"/>
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1 : 1"
+        android:src="@drawable/logo"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:contentDescription="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_draw_an_unlock_pattern"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/draw_an_unlock_pattern"
+        android:textSize="@dimen/_16ssp"
+        android:fontFamily="@font/inter_bold"
+        android:layout_marginTop="@dimen/_40sdp"
+        android:contentDescription="@null"
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    
     <com.giang.applock20.screen.lock_pattern.PatternLockView
         android:id="@+id/pattern_lock_view"
         android:layout_width="280dp"
         android:layout_height="280dp"
+        android:layout_marginTop="@dimen/_110sdp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

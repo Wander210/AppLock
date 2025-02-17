@@ -6,6 +6,7 @@ object MyPreferences {
     private lateinit var prefs: SharedPreferences
     private const val PREFS_NAME = "shared_preferences"
     const val PREF_LANGUAGE = "pref_language"
+    const val PREF_LOCK_PATTERN = "pref_lock_pattern"
 
     fun init(context: Context) {
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

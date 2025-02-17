@@ -41,6 +41,7 @@ android {
 dependencies {
     implementation("com.intuit.ssp:ssp-android:1.1.1")
     implementation("com.intuit.sdp:sdp-android:1.1.1")
+    implementation ("com.google.code.gson:gson:2.12.1")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
