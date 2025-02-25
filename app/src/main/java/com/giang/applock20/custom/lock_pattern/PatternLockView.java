@@ -1,4 +1,4 @@
-package com.giang.applock20.screen.lock_pattern;
+package com.giang.applock20.custom.lock_pattern;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -32,8 +32,8 @@ import androidx.annotation.IntDef;
 
 
 import com.giang.applock20.R;
-import com.giang.applock20.screen.lock_pattern.listener.PatternLockViewListener;
 import com.giang.applock20.screen.lock_pattern.utils.PatternLockUtils;
+import com.giang.applock20.screen.lock_pattern.listener.PatternLockViewListener;
 import com.giang.applock20.screen.lock_pattern.utils.ResourceUtils;
 
 import java.lang.annotation.Retention;

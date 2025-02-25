@@ -1,216 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screen.home.HomeActivity"
     android:background="@color/white">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/titleBar"
+    <View
+        android:id="@+id/top_bar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="59 : 7"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="@dimen/_60sdp"
+        android:background="@drawable/titlebar_bg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        
-        <ImageView
-            android:layout_width="@dimen/_118sdp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="59 : 8"
-            android:src="@drawable/text_app_lock"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:contentDescription="@null"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <ImageView
-            android:id="@+id/btnSetting"
-            android:layout_width="@dimen/_39sdp"
-            android:layout_height="0dp"
-            android:contentDescription="@null"
-            android:paddingVertical="@dimen/_8sdp"
-            android:paddingEnd="@dimen/_15sdp"
-            android:src="@drawable/ic_setting"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1 : 1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/btnSwitchTheme"
-            android:layout_width="@dimen/_78sdp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="2 : 1"
-            android:paddingVertical="@dimen/_8sdp"
-            android:src="@drawable/light_theme"
-            android:contentDescription="@null"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnSetting"/>
-
-        <ImageView
-            android:id="@+id/btnPremium"
-            android:layout_width="@dimen/_39sdp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1 : 1"
-            android:src="@drawable/ic_premium"
-            android:paddingVertical="@dimen/_8sdp"
-            android:paddingStart="@dimen/_15sdp"
-            android:contentDescription="@null"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnSwitchTheme"/>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/lFingerprintUnlock"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_63sdp"
-        android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/bg_home_item_grey"
-        app:layout_constraintTop_toBottomOf="@+id/titleBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/tvFingerprintUnlock"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fingerprint_unlock"
-            android:fontFamily="@font/inter_bold"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_13ssp"
-            android:contentDescription="@null"
-            android:layout_marginStart="@dimen/_10sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tvUnlockStatus"/>
-
-        <TextView
-            android:id="@+id/tvUnlockStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/unlock_status"
-            android:fontFamily="@font/inter_regular"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/_11ssp"
-            android:contentDescription="@null"
-            android:layout_marginStart="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@id/tvFingerprintUnlock"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <ImageView
-            android:id="@+id/btnUnlockToggle"
-            android:layout_width="@dimen/_39sdp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1 : 1"
-            android:src="@drawable/ic_toggle"
-            android:padding="@dimen/_8sdp"
-            android:contentDescription="@null"
-            android:layout_marginEnd="@dimen/_10sdp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/lAppLock"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="41 : 15"
-        app:layout_constraintTop_toBottomOf="@+id/lFingerprintUnlock"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginHorizontal="@dimen/_15sdp"
-        android:contentDescription="@null">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+    <ImageView
+        android:layout_width="@dimen/_64sdp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@null"
+        android:src="@drawable/applock_name"
+        app:layout_constraintDimensionRatio="8 : 3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/btn_done"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@null"
+        android:padding="@dimen/_4sdp"
+        android:src="@drawable/ic_setting"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_50sdp"
+        android:background="@color/white"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/top_bar"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorHeight="@dimen/_2sdp"
+        app:tabMaxWidth="0dp"
+        app:tabIndicatorAnimationMode="elastic"
+        app:tabIndicatorGravity="bottom"
+        app:tabIndicator="@drawable/tablayout_drawable"
+        app:tabIndicatorColor="@null"
+        app:tabSelectedTextColor="@color/gradient_start"
+        app:tabTextAppearance="@style/tab_text"
+        app:tabMode="fixed"
+        >
+
+        <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/bg_home_item_blue"/>
+            android:text="@string/all_apps" />
 
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/locked_apps" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <ImageView
-        android:id="@+id/bgGalleryVault"
-        android:layout_width="@dimen/_140sdp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="8 : 7"
-        android:background="@drawable/bg_home_item_grey"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/lAppLock"
-        app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@null"/>
+    </com.google.android.material.tabs.TabLayout>
 
-        <ImageView
-            android:id="@+id/bgCustomLockScreen"
-            android:layout_width="@dimen/_140sdp"
-            android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="18 : 13"
-            android:background="@drawable/bg_home_item_grey"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:layout_constraintTop_toBottomOf="@+id/lAppLock"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:contentDescription="@null"/>
-
-    <ImageView
-        android:id="@+id/bgIconCamouflage"
-        android:layout_width="@dimen/_140sdp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="18 : 13"
-        android:background="@drawable/bg_home_item_grey"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/bgGalleryVault"
-        app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@null"/>
-
-    <ImageView
-        android:id="@+id/bgIntruderInvader"
-        android:layout_width="@dimen/_140sdp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="8 : 7"
-        android:background="@drawable/bg_home_item_grey"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/bgCustomLockScreen"
+    <View
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:background="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@null"/>
-
-    <ImageView
-        android:layout_width="@dimen/_140sdp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="18 : 13"
-        android:background="@drawable/bg_home_item_grey"
-        android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/bgIconCamouflage"
         app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="@null"/>
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
-    <ImageView
-        android:layout_width="@dimen/_140sdp"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="18 : 13"
-        android:background="@drawable/bg_home_item_grey"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        app:layout_constraintTop_toBottomOf="@+id/bgIntruderInvader"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@null" />
-
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,35 +1,41 @@
 package com.giang.applock20.screen.splash
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import androidx.activity.enableEdgeToEdge
 import com.giang.applock20.R
 import com.giang.applock20.databinding.ActivitySplashBinding
-import com.giang.applock20.screen.base.BaseActivity
+import com.giang.applock20.base.BaseActivity
+import com.giang.applock20.screen.lock_pattern.LockPatternActivity
+import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.screen.language.LanguageActivity
 
-class SplashActivity : BaseActivity() {
+@SuppressLint("CustomSplashScreen")
+class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
-    private lateinit var binding: ActivitySplashBinding
+    override fun getViewBinding(layoutInflater: LayoutInflater): ActivitySplashBinding {
+        return ActivitySplashBinding.inflate(layoutInflater)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun initData() {
+    }
 
+    override fun setupView() {
         val splashAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.splash_scaling)
-        val splashIconiv = binding.splashIconiv
-        splashIconiv.startAnimation(splashAnimation)
+        binding.imgSplashIcon.startAnimation(splashAnimation)
+    }
 
+    override fun handleEvent() {
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this@SplashActivity, LanguageActivity::class.java))
+            if(MyPreferences.read(MyPreferences.PREF_LOCK_PATTERN, null) == null)
+                startActivity(Intent(this@SplashActivity, LanguageActivity::class.java))
+            else
+                startActivity(Intent(this@SplashActivity, LockPatternActivity::class.java))
             finish()
         }, 3000)
     }
-
 }

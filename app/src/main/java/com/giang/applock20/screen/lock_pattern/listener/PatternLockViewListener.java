@@ -4,7 +4,7 @@ package com.giang.applock20.screen.lock_pattern.listener;
  * Created by aritraroy on 19/03/17.
  */
 
-import com.giang.applock20.screen.lock_pattern.PatternLockView;
+import com.giang.applock20.custom.lock_pattern.PatternLockView;
 
 import java.util.List;
 

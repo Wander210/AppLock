@@ -5,8 +5,8 @@ import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.widget.TextView
-import com.giang.applock20.screen.lock_pattern.PatternLockView
-import com.giang.applock20.screen.lock_pattern.PatternLockView.PatternViewMode
+import com.giang.applock20.custom.lock_pattern.PatternLockView
+import com.giang.applock20.custom.lock_pattern.PatternLockView.PatternViewMode
 
 object AnimationUtil {
     fun setTextWrong(patternLockView: PatternLockView, textView: TextView, pattern:  MutableList<PatternLockView.Dot>?) {
@@ -16,7 +16,7 @@ object AnimationUtil {
             "translationX",
             0f, 20f, -20f, 15f, -15f, 5f, -5f, 0f
         )
-        animator.duration = 500
+        animator.duration = 1000
 
         textView.setTextColor(Color.RED)
         animator.start()
@@ -24,7 +24,7 @@ object AnimationUtil {
         Handler(Looper.getMainLooper()).postDelayed({
             textView.setTextColor(Color.BLACK)
             patternLockView.clearPattern()
-        }, 500)
+        }, 1000)
     }
 
 }

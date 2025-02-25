@@ -15,18 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppLock20"
         tools:targetApi="31">
-        <activity
-            android:name=".screen.MainActivity"
-            android:exported="false"/>
+
         <activity
             android:name=".screen.lock_pattern.SetLockPatternActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"/>
         <activity
             android:name=".screen.lock_pattern.LockPatternActivity"
             android:exported="false" />
@@ -34,14 +26,21 @@
             android:name=".screen.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".screen.base.BaseActivity"
+            android:name=".base.BaseActivity"
             android:exported="false" />
         <activity
             android:name=".screen.language.LanguageActivity"
             android:exported="false" />
         <activity
             android:name=".screen.splash.SplashActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

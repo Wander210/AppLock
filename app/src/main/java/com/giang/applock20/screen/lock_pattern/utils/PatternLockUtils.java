@@ -17,7 +17,7 @@
 package com.giang.applock20.screen.lock_pattern.utils;
 
 
-import com.giang.applock20.screen.lock_pattern.PatternLockView;
+import com.giang.applock20.custom.lock_pattern.PatternLockView;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;

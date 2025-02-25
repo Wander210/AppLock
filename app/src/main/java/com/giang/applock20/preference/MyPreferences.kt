@@ -1,4 +1,5 @@
 package com.giang.applock20.preference
+
 import android.content.Context
 import android.content.SharedPreferences
 

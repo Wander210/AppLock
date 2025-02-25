@@ -2,12 +2,10 @@ package com.giang.applock20.screen.language
 
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.giang.applock20.R
+import com.giang.applock20.databinding.ItemLanguageBinding
 import com.giang.applock20.model.Language
 
 class LanguageItemAdapter(
@@ -16,6 +14,7 @@ class LanguageItemAdapter(
 ) : RecyclerView.Adapter<LanguageItemViewHolder>() {
 
     private var selectedPosition: Int = -1
+    private lateinit var itemView : ItemLanguageBinding
 
     fun updateSelectedPosition(selectedLanguage: String) {
         val previousPosition = selectedPosition
@@ -31,34 +30,30 @@ class LanguageItemAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.language_item, parent, false)
-        return LanguageItemViewHolder(view)
+        itemView = ItemLanguageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return LanguageItemViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: LanguageItemViewHolder, position: Int) {
         val language = languageList[position]
-//        curLanguage?.let {
-//            updateSelectedPosition(it)
-//        }
         holder.bind(language, position == selectedPosition, clickListener)
     }
 
     override fun getItemCount(): Int = languageList.size
 }
 
-class LanguageItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val ivLanguageIcon: ImageView = itemView.findViewById(R.id.languageIcon)
-    private val tvLanguageName: TextView = itemView.findViewById(R.id.languageName)
-
+class LanguageItemViewHolder(private val binding: ItemLanguageBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(language: Language, isSelected: Boolean, onLanguageSelected: (Language) -> Unit) {
-        ivLanguageIcon.setImageResource(language.icon)
-        tvLanguageName.text = language.name
-        tvLanguageName.setTextColor(
-            if(isSelected) Color.parseColor("#FFFFFF") else Color.parseColor("#131936")
-        )
-        itemView.setBackgroundResource(
-            if (isSelected) R.drawable.language_item_selected_bg else R.drawable.language_item_bg
-        )
-        itemView.setOnClickListener { onLanguageSelected(language) }
+        binding.apply {
+            imgLanguageIcon.setImageResource(language.icon)
+            tvLanguageName.text = language.name
+            tvLanguageName.setTextColor(
+                if(isSelected) Color.parseColor("#FFFFFF") else Color.parseColor("#131936")
+            )
+            itemView.setBackgroundResource(
+                if (isSelected) R.drawable.bg_selected_language_item else R.drawable.bg_language_item
+            )
+            root.setOnClickListener { onLanguageSelected(language) }
+        }
     }
 }

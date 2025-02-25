@@ -17,4 +17,11 @@
         <attr name="dotAnimationDuration" format="integer"/>
         <attr name="pathEndAnimationDuration" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="GradientTextView">
+        <attr format="boolean" name="isVertical"/>
+        <attr format="color" name="startColor"/>
+        <attr format="color" name="endColor"/>
+        <attr format="float" name="angle"/>
+    </declare-styleable>
 </resources>

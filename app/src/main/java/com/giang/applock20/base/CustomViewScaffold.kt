@@ -1,4 +1,4 @@
-package com.giang.applock20.screen
+package com.giang.applock20.base
 
 import android.content.Context
 import android.util.AttributeSet
