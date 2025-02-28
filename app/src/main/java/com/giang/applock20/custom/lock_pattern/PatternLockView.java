@@ -32,9 +32,9 @@ import androidx.annotation.IntDef;
 
 
 import com.giang.applock20.R;
-import com.giang.applock20.screen.lock_pattern.utils.PatternLockUtils;
-import com.giang.applock20.screen.lock_pattern.listener.PatternLockViewListener;
-import com.giang.applock20.screen.lock_pattern.utils.ResourceUtils;
+import com.giang.applock20.custom.lock_pattern.utils.PatternLockUtils;
+import com.giang.applock20.custom.lock_pattern.listener.PatternLockViewListener;
+import com.giang.applock20.custom.lock_pattern.utils.ResourceUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

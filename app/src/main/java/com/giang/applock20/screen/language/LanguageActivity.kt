@@ -8,7 +8,7 @@ import com.giang.applock20.databinding.ActivityLanguageBinding
 import com.giang.applock20.model.Language
 import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.base.BaseActivity
-import com.giang.applock20.screen.lock_pattern.SetLockPatternActivity
+import com.giang.applock20.screen.set_new_lock_pattern.SetLockPatternActivity
 
 class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
 

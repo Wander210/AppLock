@@ -1,19 +1,20 @@
-package com.giang.applock20.screen.lock_pattern
+package com.giang.applock20.screen.validate_pattern_lock
 
 import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.os.Build
 import android.view.LayoutInflater
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import com.giang.applock20.databinding.ActivityLockPatternBinding
 import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.custom.lock_pattern.PatternLockView
 import com.giang.applock20.custom.lock_pattern.PatternLockView.PatternViewMode
-import com.giang.applock20.screen.lock_pattern.listener.PatternLockViewListener
+import com.giang.applock20.custom.lock_pattern.listener.PatternLockViewListener
 import com.giang.applock20.screen.home.HomeActivity
 import com.giang.applock20.util.AnimationUtil
+import com.giang.applock20.util.LoadAppsUtil
+import com.giang.applock20.viewmodel.AppViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -21,16 +22,19 @@ class LockPatternActivity : BaseActivity<ActivityLockPatternBinding>() {
 
     private lateinit var correctPattern: List<PatternLockView.Dot>
     private lateinit var tempPattern : ArrayList<PatternLockView.Dot>
+    private val appViewModel: AppViewModel by viewModels()
 
     override fun getViewBinding(layoutInflater: LayoutInflater): ActivityLockPatternBinding {
         return ActivityLockPatternBinding.inflate(layoutInflater)
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun initData() {
         val gson = Gson()
         val json = MyPreferences.read(MyPreferences.PREF_LOCK_PATTERN, null)
         val type = object : TypeToken<List<PatternLockView.Dot>>() {}.type
         correctPattern = gson.fromJson(json, type)
+        LoadAppsUtil.loadApps(this, this, appViewModel)
     }
 
     override fun setupView() {

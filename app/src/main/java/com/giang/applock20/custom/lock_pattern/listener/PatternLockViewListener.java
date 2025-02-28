@@ -1,4 +1,4 @@
-package com.giang.applock20.screen.lock_pattern.listener;
+package com.giang.applock20.custom.lock_pattern.listener;
 
 /**
  * Created by aritraroy on 19/03/17.

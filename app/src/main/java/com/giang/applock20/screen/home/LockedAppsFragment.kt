@@ -6,14 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.giang.applock20.R
+import com.giang.applock20.base.BaseFragment
+import com.giang.applock20.databinding.FragmentLockedAppsBinding
 
-class LockedAppsFragment : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_locked_apps, container, false)
+class LockedAppsFragment : BaseFragment<FragmentLockedAppsBinding>() {
+    override fun getViewBinding(layoutInflater: LayoutInflater): FragmentLockedAppsBinding {
+        return FragmentLockedAppsBinding.inflate(layoutInflater)
     }
+
+    override fun initData() {
+    }
+
+    override fun setupView() {
+    }
+
+    override fun handleEvent() {
+    }
+
 
 }

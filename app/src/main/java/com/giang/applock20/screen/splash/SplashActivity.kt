@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils
 import com.giang.applock20.R
 import com.giang.applock20.databinding.ActivitySplashBinding
 import com.giang.applock20.base.BaseActivity
-import com.giang.applock20.screen.lock_pattern.LockPatternActivity
+import com.giang.applock20.screen.validate_pattern_lock.LockPatternActivity
 import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.screen.language.LanguageActivity
 
@@ -27,9 +27,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun setupView() {
         val splashAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.splash_scaling)
         binding.imgSplashIcon.startAnimation(splashAnimation)
-    }
-
-    override fun handleEvent() {
         Handler(Looper.getMainLooper()).postDelayed({
             if(MyPreferences.read(MyPreferences.PREF_LOCK_PATTERN, null) == null)
                 startActivity(Intent(this@SplashActivity, LanguageActivity::class.java))
@@ -37,5 +34,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 startActivity(Intent(this@SplashActivity, LockPatternActivity::class.java))
             finish()
         }, 3000)
+    }
+
+    override fun handleEvent() {
+
     }
 }

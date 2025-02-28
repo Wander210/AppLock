@@ -1,33 +1,39 @@
-package com.giang.applock20.screen.lock_pattern
+package com.giang.applock20.screen.set_new_lock_pattern
 
 import android.content.Intent
-import android.os.Bundle
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.giang.applock20.R
-import com.giang.applock20.databinding.ActivitySetLockPatternBinding
-import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.custom.lock_pattern.PatternLockView
 import com.giang.applock20.custom.lock_pattern.PatternLockView.PatternViewMode
-import com.giang.applock20.screen.lock_pattern.listener.PatternLockViewListener
+import com.giang.applock20.custom.lock_pattern.listener.PatternLockViewListener
+import com.giang.applock20.databinding.ActivitySetLockPatternBinding
+import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.screen.home.HomeActivity
-import com.giang.applock20.util.AnimationUtil
+import com.giang.applock20.util.*
+import com.giang.applock20.viewmodel.AppViewModel
 import com.google.gson.Gson
 
 class SetLockPatternActivity : BaseActivity<ActivitySetLockPatternBinding>() {
 
     private lateinit var tempPattern : ArrayList<PatternLockView.Dot>
     private var correctPattern = ArrayList<PatternLockView.Dot>()
+    private val appViewModel: AppViewModel by viewModels()
+
     override fun getViewBinding(layoutInflater: LayoutInflater): ActivitySetLockPatternBinding {
         return ActivitySetLockPatternBinding.inflate(layoutInflater)
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun initData() {
+        LoadAppsUtil.loadApps(this, this, appViewModel)
     }
 
     override fun setupView() {
@@ -108,5 +114,4 @@ class SetLockPatternActivity : BaseActivity<ActivitySetLockPatternBinding>() {
             binding.patternLockView.clearPattern()
         }
     }
-
 }

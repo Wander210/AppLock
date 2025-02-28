@@ -7,26 +7,36 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.giang.applock20.R
+import com.giang.applock20.databinding.FragmentAllAppsBinding
+import com.giang.applock20.databinding.ItemAppBinding
+import com.giang.applock20.databinding.ItemLanguageBinding
 import com.giang.applock20.model.AppInfo
+import com.giang.applock20.screen.language.LanguageItemViewHolder
 
-class AppAdapter(private val appList: List<AppInfo>) :
-    RecyclerView.Adapter<AppAdapter.AppViewHolder>() {
+class AppAdapter(val appList: List<AppInfo>) :
+    RecyclerView.Adapter<AppAdapter.AppItemViewHolder>() {
 
-    inner class AppViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val appIcon: ImageView = itemView.findViewById(R.id.appIcon)
-        val appName: TextView = itemView.findViewById(R.id.appName)
+    private lateinit var itemView: ItemAppBinding
+
+    inner class AppItemViewHolder(private val binding: ItemAppBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(app: AppInfo) {
+            binding.apply{
+                imgAppIcon.setImageDrawable(app.icon)
+                tvAppName.text = app.name
+            }
+        }
+
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_app, parent, false)
-        return AppViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppItemViewHolder {
+        itemView = ItemAppBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return AppItemViewHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: AppViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AppItemViewHolder, position: Int) {
         val app = appList[position]
-        holder.appIcon.setImageDrawable(app.icon)
-        holder.appName.text = app.name
+        holder.bind(app)
+
     }
 
     override fun getItemCount(): Int = appList.size

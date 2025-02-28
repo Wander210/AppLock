@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-package com.giang.applock20.screen.lock_pattern.utils;
+package com.giang.applock20.custom.lock_pattern.utils;
 
 import java.util.ArrayList;
 import java.util.List;
