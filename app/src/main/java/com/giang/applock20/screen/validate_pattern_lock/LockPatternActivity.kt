@@ -13,7 +13,7 @@ import com.giang.applock20.custom.lock_pattern.PatternLockView.PatternViewMode
 import com.giang.applock20.custom.lock_pattern.listener.PatternLockViewListener
 import com.giang.applock20.screen.home.HomeActivity
 import com.giang.applock20.util.AnimationUtil
-import com.giang.applock20.util.LoadAppsUtil
+import com.giang.applock20.util.AppInfoUtil
 import com.giang.applock20.viewmodel.AppViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -34,7 +34,6 @@ class LockPatternActivity : BaseActivity<ActivityLockPatternBinding>() {
         val json = MyPreferences.read(MyPreferences.PREF_LOCK_PATTERN, null)
         val type = object : TypeToken<List<PatternLockView.Dot>>() {}.type
         correctPattern = gson.fromJson(json, type)
-        LoadAppsUtil.loadApps(this, this, appViewModel)
     }
 
     override fun setupView() {

@@ -1,5 +1,6 @@
 package com.giang.applock20.screen.home
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,16 @@ import com.giang.applock20.databinding.ItemLanguageBinding
 import com.giang.applock20.model.AppInfo
 import com.giang.applock20.screen.language.LanguageItemViewHolder
 
-class AppAdapter(val appList: List<AppInfo>) :
+class AppAdapter(var appList: List<AppInfo>) :
     RecyclerView.Adapter<AppAdapter.AppItemViewHolder>() {
 
     private lateinit var itemView: ItemAppBinding
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setFilteredList(filteredList : List<AppInfo>) {
+        appList = filteredList
+        notifyDataSetChanged()
+    }
 
     inner class AppItemViewHolder(private val binding: ItemAppBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(app: AppInfo) {

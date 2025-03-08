@@ -33,7 +33,6 @@ class SetLockPatternActivity : BaseActivity<ActivitySetLockPatternBinding>() {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun initData() {
-        LoadAppsUtil.loadApps(this, this, appViewModel)
     }
 
     override fun setupView() {

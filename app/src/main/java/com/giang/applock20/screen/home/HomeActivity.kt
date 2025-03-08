@@ -1,13 +1,12 @@
 package com.giang.applock20.screen.home
 
+import android.graphics.Color
+import android.graphics.Shader
 import android.text.SpannableString
 import android.text.TextPaint
 import android.text.style.CharacterStyle
 import android.view.LayoutInflater
 import android.widget.TextView
-import android.graphics.Color
-import androidx.compose.ui.graphics.LinearGradient
-import android.graphics.Shader
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.giang.applock20.R
@@ -29,7 +28,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         binding.apply {
             viewPager2.adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                
+
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     binding.tabLayout.getTabAt(position)?.select()
@@ -67,7 +66,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                     null
                 ), resources.getColor(R.color.gradient_end, null)
             ) else intArrayOf(Color.parseColor("#ACACAC"), Color.parseColor("#ACACAC"))
-            
+
             val tab = binding.tabLayout.getTabAt(i)
             val height = tab?.view?.height ?: 0
             val spannable = SpannableString(tab?.text)
