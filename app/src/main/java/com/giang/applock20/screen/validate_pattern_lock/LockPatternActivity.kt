@@ -13,8 +13,6 @@ import com.giang.applock20.custom.lock_pattern.PatternLockView.PatternViewMode
 import com.giang.applock20.custom.lock_pattern.listener.PatternLockViewListener
 import com.giang.applock20.screen.home.HomeActivity
 import com.giang.applock20.util.AnimationUtil
-import com.giang.applock20.util.AppInfoUtil
-import com.giang.applock20.viewmodel.AppViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -22,7 +20,6 @@ class LockPatternActivity : BaseActivity<ActivityLockPatternBinding>() {
 
     private lateinit var correctPattern: List<PatternLockView.Dot>
     private lateinit var tempPattern : ArrayList<PatternLockView.Dot>
-    private val appViewModel: AppViewModel by viewModels()
 
     override fun getViewBinding(layoutInflater: LayoutInflater): ActivityLockPatternBinding {
         return ActivityLockPatternBinding.inflate(layoutInflater)

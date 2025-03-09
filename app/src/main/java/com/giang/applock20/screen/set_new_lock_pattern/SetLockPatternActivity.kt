@@ -18,14 +18,12 @@ import com.giang.applock20.databinding.ActivitySetLockPatternBinding
 import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.screen.home.HomeActivity
 import com.giang.applock20.util.*
-import com.giang.applock20.viewmodel.AppViewModel
 import com.google.gson.Gson
 
 class SetLockPatternActivity : BaseActivity<ActivitySetLockPatternBinding>() {
 
     private lateinit var tempPattern : ArrayList<PatternLockView.Dot>
     private var correctPattern = ArrayList<PatternLockView.Dot>()
-    private val appViewModel: AppViewModel by viewModels()
 
     override fun getViewBinding(layoutInflater: LayoutInflater): ActivitySetLockPatternBinding {
         return ActivitySetLockPatternBinding.inflate(layoutInflater)

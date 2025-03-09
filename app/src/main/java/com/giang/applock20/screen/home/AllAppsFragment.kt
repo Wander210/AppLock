@@ -6,7 +6,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.giang.applock20.base.BaseFragment
 import com.giang.applock20.databinding.FragmentAllAppsBinding
-import com.giang.applock20.model.AppInfo
+import com.giang.applock20.screen.home.AppAdapter.SlideOutRightItemAnimator
 import com.giang.applock20.util.AppInfoUtil
 
 class AllAppsFragment : BaseFragment<FragmentAllAppsBinding>() {
@@ -27,6 +27,8 @@ class AllAppsFragment : BaseFragment<FragmentAllAppsBinding>() {
 
             appAdapter = AppAdapter(AppInfoUtil.listAppInfo)
             recyclerView.adapter = appAdapter
+            recyclerView.itemAnimator = appAdapter.SlideOutRightItemAnimator()
+
 
             searchBar.clearFocus()
             searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.giang.applock20.R
 import com.giang.applock20.databinding.FragmentAllAppsBinding
@@ -19,10 +21,23 @@ class AppAdapter(var appList: List<AppInfo>) :
 
     private lateinit var itemView: ItemAppBinding
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setFilteredList(filteredList : List<AppInfo>) {
+    fun setFilteredList(filteredList: List<AppInfo>) {
+        val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize(): Int = appList.size
+
+            override fun getNewListSize(): Int = filteredList.size
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return appList[oldItemPosition].packageName == filteredList[newItemPosition].packageName
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return appList[oldItemPosition] == filteredList[newItemPosition]
+            }
+        })
+
         appList = filteredList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     inner class AppItemViewHolder(private val binding: ItemAppBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -47,4 +62,20 @@ class AppAdapter(var appList: List<AppInfo>) :
     }
 
     override fun getItemCount(): Int = appList.size
+
+    inner class SlideOutRightItemAnimator : DefaultItemAnimator() {
+        override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
+            val view = holder.itemView
+            view.animate()
+                .translationX(view.width.toFloat())
+                .setDuration(500)
+                .withEndAction {
+                    dispatchRemoveFinished(holder)
+                    view.translationX = 0f
+                }
+                .start()
+            return true
+        }
+    }
+
 }
