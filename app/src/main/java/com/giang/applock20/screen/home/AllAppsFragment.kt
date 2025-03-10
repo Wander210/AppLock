@@ -51,12 +51,12 @@ class AllAppsFragment : BaseFragment<FragmentAllAppsBinding>() {
             it.name.lowercase().contains(text.lowercase())
         }
 
-        val value = if (filteredList.isEmpty()) Toast.makeText(
+        appAdapter.setFilteredList(filteredList)
+        if (filteredList.isEmpty()) Toast.makeText(
             requireContext(),
             "No data found",
             Toast.LENGTH_SHORT
         ).show()
-        else appAdapter.setFilteredList(filteredList)
     }
 
     override fun handleEvent() {

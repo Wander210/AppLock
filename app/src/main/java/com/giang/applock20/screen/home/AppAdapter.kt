@@ -56,6 +56,8 @@ class AppAdapter(var appList: List<AppInfo>) :
     }
 
     override fun onBindViewHolder(holder: AppItemViewHolder, position: Int) {
+        holder.itemView.translationX = 0f
+
         val app = appList[position]
         holder.bind(app)
 
@@ -67,11 +69,24 @@ class AppAdapter(var appList: List<AppInfo>) :
         override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
             val view = holder.itemView
             view.animate()
-                .translationX(view.width.toFloat())
-                .setDuration(500)
+                .translationX(-view.width.toFloat())
+                .setDuration(800)
                 .withEndAction {
                     dispatchRemoveFinished(holder)
-                    view.translationX = 0f
+                }
+                .start()
+            return true
+        }
+
+        override fun animateAdd(holder: RecyclerView.ViewHolder): Boolean {
+            val view = holder.itemView
+            view.translationX = -view.width.toFloat()
+            view.animate()
+                .translationX(0f)
+                .setDuration(800)
+                .withEndAction {
+                    dispatchAddFinished(holder)
+                    
                 }
                 .start()
             return true
