@@ -5,12 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.giang.applock20.R
 
 abstract class BaseFragment<VB: ViewBinding> : Fragment() {
 
     protected lateinit var binding: VB
+    protected var recyclerViewAdapter: RecyclerView.Adapter<*>? = null
 
     abstract fun getViewBinding(layoutInflater: LayoutInflater) : VB
 
@@ -34,6 +35,11 @@ abstract class BaseFragment<VB: ViewBinding> : Fragment() {
         initData()
         setupView()
         handleEvent()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        recyclerViewAdapter?.notifyDataSetChanged()
     }
 }
 

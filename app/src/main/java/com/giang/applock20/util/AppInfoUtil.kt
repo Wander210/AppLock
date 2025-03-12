@@ -9,10 +9,13 @@ import android.graphics.drawable.Drawable
 import com.giang.applock20.model.AppInfo
 
 object AppInfoUtil {
-    val listAppInfo by lazy { ArrayList<AppInfo>() }
+    var listAppInfo = ArrayList<AppInfo>()
+    var listLockedAppInfo = ArrayList<AppInfo>()
+
 
     fun initInstalledApps(context: Context) {
         listAppInfo.clear()
+        listLockedAppInfo.clear()
 
         val packageManager = context.packageManager
         val mainIntent = Intent(Intent.ACTION_MAIN, null).apply {

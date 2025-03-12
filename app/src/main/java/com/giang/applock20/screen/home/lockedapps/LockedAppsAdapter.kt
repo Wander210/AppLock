@@ -1,42 +1,35 @@
-package com.giang.applock20.screen.home
+package com.giang.applock20.screen.home.lockedapps
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.giang.applock20.R
-import com.giang.applock20.databinding.FragmentAllAppsBinding
 import com.giang.applock20.databinding.ItemAppBinding
-import com.giang.applock20.databinding.ItemLanguageBinding
 import com.giang.applock20.model.AppInfo
-import com.giang.applock20.screen.language.LanguageItemViewHolder
 
-class AppAdapter(var appList: List<AppInfo>) :
-    RecyclerView.Adapter<AppAdapter.AppItemViewHolder>() {
+class LockedAppsAdapter(var lockedAppList: List<AppInfo>,
+                        private val onItemClick: (AppInfo) -> Unit) :
+    RecyclerView.Adapter<LockedAppsAdapter.AppItemViewHolder>() {
 
     private lateinit var itemView: ItemAppBinding
 
-    fun setFilteredList(filteredList: List<AppInfo>) {
+    fun setNewList(newList: List<AppInfo>) {
         val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-            override fun getOldListSize(): Int = appList.size
+            override fun getOldListSize(): Int = lockedAppList.size
 
-            override fun getNewListSize(): Int = filteredList.size
+            override fun getNewListSize(): Int = newList.size
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return appList[oldItemPosition].packageName == filteredList[newItemPosition].packageName
+                return lockedAppList[oldItemPosition].packageName == newList[newItemPosition].packageName
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return appList[oldItemPosition] == filteredList[newItemPosition]
+                return lockedAppList[oldItemPosition] == newList[newItemPosition]
             }
         })
 
-        appList = filteredList
+        lockedAppList = newList
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -45,6 +38,9 @@ class AppAdapter(var appList: List<AppInfo>) :
             binding.apply{
                 imgAppIcon.setImageDrawable(app.icon)
                 tvAppName.text = app.name
+                itemView.setOnClickListener({
+                    onItemClick(app)
+                })
             }
         }
 
@@ -58,12 +54,12 @@ class AppAdapter(var appList: List<AppInfo>) :
     override fun onBindViewHolder(holder: AppItemViewHolder, position: Int) {
         holder.itemView.translationX = 0f
 
-        val app = appList[position]
+        val app = lockedAppList[position]
         holder.bind(app)
 
     }
 
-    override fun getItemCount(): Int = appList.size
+    override fun getItemCount(): Int = lockedAppList.size
 
     inner class SlideOutRightItemAnimator : DefaultItemAnimator() {
         override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
@@ -86,7 +82,6 @@ class AppAdapter(var appList: List<AppInfo>) :
                 .setDuration(800)
                 .withEndAction {
                     dispatchAddFinished(holder)
-                    
                 }
                 .start()
             return true

@@ -1,4 +1,4 @@
-package com.giang.applock20.screen.home
+package com.giang.applock20.screen.home.allapps
 
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -6,12 +6,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.giang.applock20.base.BaseFragment
 import com.giang.applock20.databinding.FragmentAllAppsBinding
-import com.giang.applock20.screen.home.AppAdapter.SlideOutRightItemAnimator
-import com.giang.applock20.util.AppInfoUtil
+import com.giang.applock20.util.AppInfoUtil.listAppInfo
+import com.giang.applock20.util.AppInfoUtil.listLockedAppInfo
+
 
 class AllAppsFragment : BaseFragment<FragmentAllAppsBinding>() {
 
-    private lateinit var appAdapter: AppAdapter
+    private lateinit var allAppsAdapter: AllAppsAdapter
 
     override fun getViewBinding(layoutInflater: LayoutInflater): FragmentAllAppsBinding {
         return FragmentAllAppsBinding.inflate(layoutInflater)
@@ -25,9 +26,20 @@ class AllAppsFragment : BaseFragment<FragmentAllAppsBinding>() {
         binding.apply {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-            appAdapter = AppAdapter(AppInfoUtil.listAppInfo)
-            recyclerView.adapter = appAdapter
-            recyclerView.itemAnimator = appAdapter.SlideOutRightItemAnimator()
+            allAppsAdapter = AllAppsAdapter(listAppInfo) { clickedAppInfo ->
+                // Avoid adding the same app to listLockedAppInfo multiple times when the user clicks repeatedly
+                if(!listLockedAppInfo.contains(clickedAppInfo)) {
+                    //Ensure that DiffUtil can accurately detect changes between the old and new lists
+                    val tempList = listAppInfo.filterNot { it == clickedAppInfo }
+                    listLockedAppInfo.add(clickedAppInfo)
+                    allAppsAdapter.setNewList(tempList)
+                    listAppInfo.remove(clickedAppInfo)
+                }
+
+            }
+
+            recyclerView.adapter = allAppsAdapter
+            recyclerView.itemAnimator = allAppsAdapter.SlideOutRightItemAnimator()
 
 
             searchBar.clearFocus()
@@ -47,11 +59,11 @@ class AllAppsFragment : BaseFragment<FragmentAllAppsBinding>() {
     }
 
     private fun filterList(text : String) {
-        val filteredList = AppInfoUtil.listAppInfo.filter {
+        val filteredList = listAppInfo.filter {
             it.name.lowercase().contains(text.lowercase())
         }
 
-        appAdapter.setFilteredList(filteredList)
+        allAppsAdapter.setNewList(filteredList)
         if (filteredList.isEmpty()) Toast.makeText(
             requireContext(),
             "No data found",
@@ -60,5 +72,6 @@ class AllAppsFragment : BaseFragment<FragmentAllAppsBinding>() {
     }
 
     override fun handleEvent() {
+
     }
 }
