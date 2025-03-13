@@ -12,8 +12,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.databinding.ActivityHomeBinding
-import com.giang.applock20.screen.home.allapps.AllAppsFragment
-import com.giang.applock20.screen.home.lockedapps.LockedAppsFragment
+import com.giang.applock20.screen.home.all_apps.AllAppsFragment
+import com.giang.applock20.screen.home.locked_apps.LockedAppsFragment
 import com.google.android.material.tabs.TabLayout
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {

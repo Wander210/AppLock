@@ -1,4 +1,4 @@
-package com.giang.applock20.screen.home.lockedapps
+package com.giang.applock20.screen.home.locked_apps
 
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.giang.applock20.base.BaseFragment
 import com.giang.applock20.databinding.FragmentLockedAppsBinding
+import com.giang.applock20.util.AppInfoUtil
 import com.giang.applock20.util.AppInfoUtil.listAppInfo
 import com.giang.applock20.util.AppInfoUtil.listLockedAppInfo
 
@@ -13,6 +14,12 @@ import com.giang.applock20.util.AppInfoUtil.listLockedAppInfo
 class LockedAppsFragment : BaseFragment<FragmentLockedAppsBinding>() {
 
     private lateinit var lockedAppsAdapter: LockedAppsAdapter
+
+    override fun onResume() {
+        super.onResume()
+        listLockedAppInfo.sortWith(compareBy {it.name})
+        lockedAppsAdapter.setNewList(listLockedAppInfo)
+    }
 
     override fun getViewBinding(layoutInflater: LayoutInflater): FragmentLockedAppsBinding {
         return FragmentLockedAppsBinding.inflate(layoutInflater)
@@ -29,7 +36,7 @@ class LockedAppsFragment : BaseFragment<FragmentLockedAppsBinding>() {
             lockedAppsAdapter = LockedAppsAdapter(listLockedAppInfo) { clickedAppInfo ->
                 if(!listAppInfo.contains(clickedAppInfo)) {
                     val tempList = listLockedAppInfo.filterNot { it == clickedAppInfo }
-                    listAppInfo.add(clickedAppInfo)
+                    AppInfoUtil.insertSortedAppInfo(listAppInfo, clickedAppInfo)
                     lockedAppsAdapter.setNewList(tempList)
                     listLockedAppInfo.remove(clickedAppInfo)
                 }

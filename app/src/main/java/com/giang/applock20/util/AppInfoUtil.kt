@@ -36,4 +36,11 @@ object AppInfoUtil {
 
         listAppInfo.sortWith(compareBy { it.name })
     }
+
+    //Binary sort
+    fun insertSortedAppInfo(sortedList: MutableList<AppInfo>, newApp: AppInfo) {
+        val index = sortedList.binarySearchBy(newApp.name) { it.name }
+        val insertIndex = if (index >= 0) index else -index - 1
+        sortedList.add(insertIndex, newApp)
+    }
 }

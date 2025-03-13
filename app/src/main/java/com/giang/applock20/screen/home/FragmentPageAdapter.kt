@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.giang.applock20.screen.home.allapps.AllAppsFragment
-import com.giang.applock20.screen.home.lockedapps.LockedAppsFragment
+import com.giang.applock20.screen.home.all_apps.AllAppsFragment
+import com.giang.applock20.screen.home.locked_apps.LockedAppsFragment
 
 class FragmentPageAdapter(
     fragmentManager: FragmentManager,

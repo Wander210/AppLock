@@ -1,4 +1,4 @@
-package com.giang.applock20.screen.home.lockedapps
+package com.giang.applock20.screen.home.locked_apps
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -66,7 +66,7 @@ class LockedAppsAdapter(var lockedAppList: List<AppInfo>,
             val view = holder.itemView
             view.animate()
                 .translationX(-view.width.toFloat())
-                .setDuration(800)
+                .setDuration(300)
                 .withEndAction {
                     dispatchRemoveFinished(holder)
                 }
@@ -79,7 +79,7 @@ class LockedAppsAdapter(var lockedAppList: List<AppInfo>,
             view.translationX = -view.width.toFloat()
             view.animate()
                 .translationX(0f)
-                .setDuration(800)
+                .setDuration(300)
                 .withEndAction {
                     dispatchAddFinished(holder)
                 }

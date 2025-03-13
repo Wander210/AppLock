@@ -1,4 +1,4 @@
-package com.giang.applock20.screen.home.allapps
+package com.giang.applock20.screen.home.all_apps
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -62,12 +62,13 @@ class AllAppsAdapter(var appList: List<AppInfo>,
 
     override fun getItemCount(): Int = appList.size
 
+
     inner class SlideOutRightItemAnimator : DefaultItemAnimator() {
         override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
             val view = holder.itemView
             view.animate()
                 .translationX(view.width.toFloat())
-                .setDuration(800)
+                .setDuration(300)
                 .withEndAction {
                     dispatchRemoveFinished(holder)
                 }
@@ -80,7 +81,7 @@ class AllAppsAdapter(var appList: List<AppInfo>,
             view.translationX = view.width.toFloat()
             view.animate()
                 .translationX(0f)
-                .setDuration(800)
+                .setDuration(300)
                 .withEndAction {
                     dispatchAddFinished(holder)
                 }

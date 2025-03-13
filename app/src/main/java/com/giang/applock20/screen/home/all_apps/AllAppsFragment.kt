@@ -1,4 +1,4 @@
-package com.giang.applock20.screen.home.allapps
+package com.giang.applock20.screen.home.all_apps
 
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.giang.applock20.base.BaseFragment
 import com.giang.applock20.databinding.FragmentAllAppsBinding
+import com.giang.applock20.util.AppInfoUtil
 import com.giang.applock20.util.AppInfoUtil.listAppInfo
 import com.giang.applock20.util.AppInfoUtil.listLockedAppInfo
 
@@ -13,6 +14,11 @@ import com.giang.applock20.util.AppInfoUtil.listLockedAppInfo
 class AllAppsFragment : BaseFragment<FragmentAllAppsBinding>() {
 
     private lateinit var allAppsAdapter: AllAppsAdapter
+
+    override fun onResume() {
+        super.onResume()
+        allAppsAdapter.setNewList(listAppInfo)
+    }
 
     override fun getViewBinding(layoutInflater: LayoutInflater): FragmentAllAppsBinding {
         return FragmentAllAppsBinding.inflate(layoutInflater)
@@ -31,7 +37,7 @@ class AllAppsFragment : BaseFragment<FragmentAllAppsBinding>() {
                 if(!listLockedAppInfo.contains(clickedAppInfo)) {
                     //Ensure that DiffUtil can accurately detect changes between the old and new lists
                     val tempList = listAppInfo.filterNot { it == clickedAppInfo }
-                    listLockedAppInfo.add(clickedAppInfo)
+                    AppInfoUtil.insertSortedAppInfo(listLockedAppInfo, clickedAppInfo)
                     allAppsAdapter.setNewList(tempList)
                     listAppInfo.remove(clickedAppInfo)
                 }
@@ -53,7 +59,6 @@ class AllAppsFragment : BaseFragment<FragmentAllAppsBinding>() {
                     return true
                 }
             })
-
         }
 
     }
