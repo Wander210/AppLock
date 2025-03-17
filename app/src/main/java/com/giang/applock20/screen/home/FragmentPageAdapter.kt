@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.giang.applock20.screen.home.all_apps.AllAppsFragment
-import com.giang.applock20.screen.home.locked_apps.LockedAppsFragment
+import com.giang.applock20.screen.home.all_app.AllAppFragment
+import com.giang.applock20.screen.home.locked_app.LockedAppFragment
 
 class FragmentPageAdapter(
     fragmentManager: FragmentManager,
@@ -15,9 +15,9 @@ class FragmentPageAdapter(
 
     override fun createFragment(position: Int): Fragment {
         return if (position == 0)
-            AllAppsFragment()
+            AllAppFragment()
         else
-            LockedAppsFragment()
+            LockedAppFragment()
     }
 
 }

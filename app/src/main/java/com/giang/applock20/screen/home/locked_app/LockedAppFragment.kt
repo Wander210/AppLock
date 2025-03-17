@@ -1,4 +1,4 @@
-package com.giang.applock20.screen.home.locked_apps
+package com.giang.applock20.screen.home.locked_app
 
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -11,14 +11,14 @@ import com.giang.applock20.util.AppInfoUtil.listAppInfo
 import com.giang.applock20.util.AppInfoUtil.listLockedAppInfo
 
 
-class LockedAppsFragment : BaseFragment<FragmentLockedAppsBinding>() {
+class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
 
-    private lateinit var lockedAppsAdapter: LockedAppsAdapter
+    private lateinit var lockedAppAdapter: LockedAppAdapter
 
     override fun onResume() {
         super.onResume()
-        listLockedAppInfo.sortWith(compareBy {it.name})
-        lockedAppsAdapter.setNewList(listLockedAppInfo)
+        lockedAppAdapter.setNewList(listLockedAppInfo)
+
     }
 
     override fun getViewBinding(layoutInflater: LayoutInflater): FragmentLockedAppsBinding {
@@ -33,16 +33,17 @@ class LockedAppsFragment : BaseFragment<FragmentLockedAppsBinding>() {
         binding.apply {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-            lockedAppsAdapter = LockedAppsAdapter(listLockedAppInfo) { clickedAppInfo ->
+            lockedAppAdapter = LockedAppAdapter(listLockedAppInfo) { clickedAppInfo ->
                 if(!listAppInfo.contains(clickedAppInfo)) {
                     val tempList = listLockedAppInfo.filterNot { it == clickedAppInfo }
                     AppInfoUtil.insertSortedAppInfo(listAppInfo, clickedAppInfo)
-                    lockedAppsAdapter.setNewList(tempList)
+
+                    lockedAppAdapter.setNewList(tempList)
                     listLockedAppInfo.remove(clickedAppInfo)
                 }
             }
-            recyclerView.adapter = lockedAppsAdapter
-            recyclerView.itemAnimator = lockedAppsAdapter.SlideOutRightItemAnimator()
+            recyclerView.adapter = lockedAppAdapter
+            recyclerView.itemAnimator = lockedAppAdapter.SlideOutRightItemAnimator()
 
 
             searchBar.clearFocus()
@@ -66,7 +67,7 @@ class LockedAppsFragment : BaseFragment<FragmentLockedAppsBinding>() {
             it.name.lowercase().contains(text.lowercase())
         }
 
-        lockedAppsAdapter.setNewList(filteredList)
+        lockedAppAdapter.setNewList(filteredList)
         if (filteredList.isEmpty()) Toast.makeText(
             requireContext(),
             "No data found",

@@ -30,7 +30,7 @@ object AppInfoUtil {
                 val icon: Drawable = activityInfo.loadIcon(packageManager)
                 val packageName : String = activityInfo.packageName
 
-                listAppInfo.add(AppInfo(icon, name, packageName))
+                listAppInfo.add(AppInfo(icon, name, packageName, false))
             }
         }
 

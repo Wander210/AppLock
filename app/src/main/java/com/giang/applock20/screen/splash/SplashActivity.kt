@@ -8,7 +8,9 @@ import android.view.animation.AnimationUtils
 import androidx.lifecycle.lifecycleScope
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
+import com.giang.applock20.dao.AppInfoDatabase
 import com.giang.applock20.databinding.ActivitySplashBinding
+import com.giang.applock20.model.AppInfo
 import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.screen.language.LanguageActivity
 import com.giang.applock20.screen.validate_pattern_lock.LockPatternActivity
@@ -33,17 +35,24 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         binding.imgSplashIcon.startAnimation(splashAnimation)
 
         lifecycleScope.launch {
-            val startTime = System.currentTimeMillis()
-            withContext(Dispatchers.IO) {
-                AppInfoUtil.initInstalledApps(this@SplashActivity)
-            }
-            val elapsedTime = System.currentTimeMillis() - startTime
-            if (elapsedTime < 3000) delay(3000 - elapsedTime)
+            if (MyPreferences.read(MyPreferences.PREF_LOCK_PATTERN, null) == null) {
+                val startTime = System.currentTimeMillis()
+                withContext(Dispatchers.IO) {
+                    AppInfoUtil.initInstalledApps(this@SplashActivity)
+                }
+                val elapsedTime = System.currentTimeMillis() - startTime
+                if (elapsedTime < 3000) delay(3000 - elapsedTime)
 
-            if (MyPreferences.read(MyPreferences.PREF_LOCK_PATTERN, null) == null)
                 startActivity(Intent(this@SplashActivity, LanguageActivity::class.java))
-            else
+            }
+            else {
+                val db = AppInfoDatabase.getInstance(this@SplashActivity)
+                val appInfoDao = db.appInfoDAO()
+                AppInfoUtil.listAppInfo = appInfoDao.getAllApp()
+                AppInfoUtil.listLockedAppInfo = appInfoDao.getLockedApp()
+
                 startActivity(Intent(this@SplashActivity, LockPatternActivity::class.java))
+            }
             finish()
         }
     }

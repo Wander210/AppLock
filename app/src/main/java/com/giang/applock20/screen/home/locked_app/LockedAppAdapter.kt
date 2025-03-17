@@ -1,4 +1,4 @@
-package com.giang.applock20.screen.home.all_apps
+package com.giang.applock20.screen.home.locked_app
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,29 +8,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.giang.applock20.databinding.ItemAppBinding
 import com.giang.applock20.model.AppInfo
 
-class AllAppsAdapter(var appList: List<AppInfo>,
-                     private val onItemClick: (AppInfo) -> Unit
-) :
-    RecyclerView.Adapter<AllAppsAdapter.AppItemViewHolder>() {
+class LockedAppAdapter(var lockedAppList: List<AppInfo>,
+                       private val onItemClick: (AppInfo) -> Unit) :
+    RecyclerView.Adapter<LockedAppAdapter.AppItemViewHolder>() {
 
     private lateinit var itemView: ItemAppBinding
 
     fun setNewList(newList: List<AppInfo>) {
         val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
-            override fun getOldListSize(): Int = appList.size
+            override fun getOldListSize(): Int = lockedAppList.size
 
             override fun getNewListSize(): Int = newList.size
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return appList[oldItemPosition].packageName == newList[newItemPosition].packageName
+                return lockedAppList[oldItemPosition].packageName == newList[newItemPosition].packageName
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return appList[oldItemPosition] == newList[newItemPosition]
+                return lockedAppList[oldItemPosition] == newList[newItemPosition]
             }
         })
 
-        appList = newList
+        lockedAppList = newList
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -39,9 +38,10 @@ class AllAppsAdapter(var appList: List<AppInfo>,
             binding.apply{
                 imgAppIcon.setImageDrawable(app.icon)
                 tvAppName.text = app.name
-                itemView.setOnClickListener {
+                itemView.setOnClickListener({
+                    app.isLocked = false
                     onItemClick(app)
-                }
+                })
             }
         }
 
@@ -55,19 +55,18 @@ class AllAppsAdapter(var appList: List<AppInfo>,
     override fun onBindViewHolder(holder: AppItemViewHolder, position: Int) {
         holder.itemView.translationX = 0f
 
-        val app = appList[position]
+        val app = lockedAppList[position]
         holder.bind(app)
 
     }
 
-    override fun getItemCount(): Int = appList.size
-
+    override fun getItemCount(): Int = lockedAppList.size
 
     inner class SlideOutRightItemAnimator : DefaultItemAnimator() {
         override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
             val view = holder.itemView
             view.animate()
-                .translationX(view.width.toFloat())
+                .translationX(-view.width.toFloat())
                 .setDuration(300)
                 .withEndAction {
                     dispatchRemoveFinished(holder)
@@ -78,7 +77,7 @@ class AllAppsAdapter(var appList: List<AppInfo>,
 
         override fun animateAdd(holder: RecyclerView.ViewHolder): Boolean {
             val view = holder.itemView
-            view.translationX = view.width.toFloat()
+            view.translationX = -view.width.toFloat()
             view.animate()
                 .translationX(0f)
                 .setDuration(300)
@@ -89,4 +88,5 @@ class AllAppsAdapter(var appList: List<AppInfo>,
             return true
         }
     }
+
 }
