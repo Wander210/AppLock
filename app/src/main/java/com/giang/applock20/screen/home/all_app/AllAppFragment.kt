@@ -3,12 +3,16 @@ package com.giang.applock20.screen.home.all_app
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.giang.applock20.base.BaseFragment
+import com.giang.applock20.dao.AppInfoDatabase
 import com.giang.applock20.databinding.FragmentAllAppsBinding
 import com.giang.applock20.util.AppInfoUtil
 import com.giang.applock20.util.AppInfoUtil.listAppInfo
 import com.giang.applock20.util.AppInfoUtil.listLockedAppInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
@@ -36,6 +40,12 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
             allAppAdapter = AllAppAdapter(listAppInfo) { clickedAppInfo ->
                 // Avoid adding the same app to listLockedAppInfo multiple times when the user clicks repeatedly
                 if(!listLockedAppInfo.contains(clickedAppInfo)) {
+                    //Update the database
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val db = AppInfoDatabase.getInstance(requireContext())
+                        db.appInfoDAO().updateAppLockStatus(clickedAppInfo.packageName, true)
+                    }
+
                     //Ensure that DiffUtil can accurately detect changes between the old and new lists
                     val tempList = listAppInfo.filterNot { it == clickedAppInfo }
                     AppInfoUtil.insertSortedAppInfo(listLockedAppInfo, clickedAppInfo)

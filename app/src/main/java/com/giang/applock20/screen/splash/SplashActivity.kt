@@ -2,6 +2,8 @@ package com.giang.applock20.screen.splash
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -23,42 +25,57 @@ import kotlinx.coroutines.withContext
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
+    private lateinit var splashAnimation: Animation
+    private lateinit var handler: Handler
+    private lateinit var db: AppInfoDatabase
+
     override fun getViewBinding(layoutInflater: LayoutInflater): ActivitySplashBinding {
         return ActivitySplashBinding.inflate(layoutInflater)
     }
 
     override fun initData() {
+        splashAnimation = AnimationUtils.loadAnimation(this, R.anim.splash_scaling)
+        handler = Handler(Looper.getMainLooper())
+        db = AppInfoDatabase.getInstance(this)
     }
 
     override fun setupView() {
-        val splashAnimation: Animation = AnimationUtils.loadAnimation(this, R.anim.splash_scaling)
         binding.imgSplashIcon.startAnimation(splashAnimation)
-
         lifecycleScope.launch {
-            if (MyPreferences.read(MyPreferences.PREF_LOCK_PATTERN, null) == null) {
-                val startTime = System.currentTimeMillis()
-                withContext(Dispatchers.IO) {
-                    AppInfoUtil.initInstalledApps(this@SplashActivity)
-                }
-                val elapsedTime = System.currentTimeMillis() - startTime
-                if (elapsedTime < 3000) delay(3000 - elapsedTime)
-
-                startActivity(Intent(this@SplashActivity, LanguageActivity::class.java))
-            }
-            else {
-                val db = AppInfoDatabase.getInstance(this@SplashActivity)
-                val appInfoDao = db.appInfoDAO()
-                AppInfoUtil.listAppInfo = appInfoDao.getAllApp()
-                AppInfoUtil.listLockedAppInfo = appInfoDao.getLockedApp()
-
-                startActivity(Intent(this@SplashActivity, LockPatternActivity::class.java))
-            }
-            finish()
+            if (MyPreferences.read(MyPreferences.PREF_LOCK_PATTERN, null) == null)
+                processAppDataAndNavigate(false)
+            else
+                processAppDataAndNavigate(true)
         }
     }
 
+    private suspend fun processAppDataAndNavigate(hasLockPattern : Boolean) {
+        val startTime = System.currentTimeMillis()
+        //Initial 2 app lists
+        withContext(Dispatchers.IO) {
+            val appInfoDao = db.appInfoDAO()
+            if(!hasLockPattern) {
+                AppInfoUtil.initInstalledApps(this@SplashActivity)
+                AppInfoUtil.listAppInfo.forEach{ appInfo ->
+                appInfoDao.insertAppInfo(appInfo)
+                }
+            }
+            else {
+                AppInfoUtil.listAppInfo = appInfoDao.getAllApp() as ArrayList<AppInfo>
+                AppInfoUtil.listLockedAppInfo = appInfoDao.getLockedApp() as ArrayList<AppInfo>
+            }
+        }
 
-    override fun handleEvent() {
+        val elapsedTime = System.currentTimeMillis() - startTime
+        if (elapsedTime < 3000) delay(3000 - elapsedTime)
 
+        navigateTo(if(!hasLockPattern) LanguageActivity::class.java else LockPatternActivity::class.java)
     }
+
+    private fun navigateTo(destination: Class<*>) {
+        startActivity(Intent(this, destination))
+        finish()
+    }
+
+    override fun handleEvent() {}
 }

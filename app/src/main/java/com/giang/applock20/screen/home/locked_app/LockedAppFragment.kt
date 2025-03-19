@@ -3,12 +3,16 @@ package com.giang.applock20.screen.home.locked_app
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.giang.applock20.base.BaseFragment
+import com.giang.applock20.dao.AppInfoDatabase
 import com.giang.applock20.databinding.FragmentLockedAppsBinding
 import com.giang.applock20.util.AppInfoUtil
 import com.giang.applock20.util.AppInfoUtil.listAppInfo
 import com.giang.applock20.util.AppInfoUtil.listLockedAppInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
@@ -35,6 +39,11 @@ class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
 
             lockedAppAdapter = LockedAppAdapter(listLockedAppInfo) { clickedAppInfo ->
                 if(!listAppInfo.contains(clickedAppInfo)) {
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val db = AppInfoDatabase.getInstance(requireContext())
+                        db.appInfoDAO().updateAppLockStatus(clickedAppInfo.packageName, false)
+                    }
+
                     val tempList = listLockedAppInfo.filterNot { it == clickedAppInfo }
                     AppInfoUtil.insertSortedAppInfo(listAppInfo, clickedAppInfo)
 

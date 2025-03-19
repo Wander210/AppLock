@@ -8,17 +8,11 @@ import android.text.style.CharacterStyle
 import android.view.LayoutInflater
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
-import com.giang.applock20.dao.AppInfoDatabase
 import com.giang.applock20.databinding.ActivityHomeBinding
-import com.giang.applock20.screen.home.all_app.AllAppFragment
-import com.giang.applock20.screen.home.locked_app.LockedAppFragment
-import com.giang.applock20.util.AppInfoUtil
 import com.google.android.material.tabs.TabLayout
-import kotlinx.coroutines.launch
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     override fun getViewBinding(layoutInflater: LayoutInflater): ActivityHomeBinding {
@@ -36,32 +30,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    binding.tabLayout.getTabAt(position)?.select()
+                    tabLayout.getTabAt(position)?.select()
                     updateTabLayoutTextColor(position)
-
-                    when (position) {
-                        0 -> AllAppFragment()
-                        1 -> LockedAppFragment()
-                    }
                 }
             })
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        val db = AppInfoDatabase.getInstance(this@HomeActivity)
-        val appInfoDao = db.appInfoDAO()
-        lifecycleScope.launch {
-            appInfoDao.deleteAll()
-
-            AppInfoUtil.listAppInfo.forEach { appInfo ->
-                appInfoDao.insertAppInfo(appInfo)
-            }
-
-            AppInfoUtil.listLockedAppInfo.forEach { appInfo ->
-                appInfoDao.insertAppInfo(appInfo)
-            }
         }
     }
 
@@ -83,16 +55,17 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     fun updateTabLayoutTextColor(selectedPosition: Int) {
         for (i in 0 until binding.tabLayout.tabCount) {
-            val colors = if (i == selectedPosition) intArrayOf(
-                resources.getColor(
-                    R.color.gradient_start,
-                    null
-                ), resources.getColor(R.color.gradient_end, null)
-            ) else intArrayOf(Color.parseColor("#ACACAC"), Color.parseColor("#ACACAC"))
 
+            val colors = if (i == selectedPosition) intArrayOf(
+                resources.getColor(R.color.gradient_start, null),
+                resources.getColor(R.color.gradient_end, null)
+            ) else
+                intArrayOf(Color.parseColor("#ACACAC"),
+                    Color.parseColor("#ACACAC"))
             val tab = binding.tabLayout.getTabAt(i)
             val height = tab?.view?.height ?: 0
             val spannable = SpannableString(tab?.text)
+
             spannable.setSpan(GradientTextSpan(colors, height.toFloat()), 0, spannable.length, 0)
             tab?.text = spannable
 
@@ -117,7 +90,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             for (i in 0 until tab.view.childCount) {
                 val typeface = ResourcesCompat.getFont(tab.view.context, R.font.exo_bold)
                 val tabViewChild = tab.view.getChildAt(i)
-                if (tabViewChild is TextView) (tabViewChild).typeface = typeface
+                if (tabViewChild is TextView) tabViewChild.typeface = typeface
             }
         }
     }

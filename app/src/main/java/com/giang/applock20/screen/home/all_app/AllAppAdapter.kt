@@ -69,7 +69,7 @@ class AllAppAdapter(var appList: List<AppInfo>,
             val view = holder.itemView
             view.animate()
                 .translationX(view.width.toFloat())
-                .setDuration(800)
+                .setDuration(300)
                 .withEndAction {
                     dispatchRemoveFinished(holder)
                 }
@@ -82,7 +82,7 @@ class AllAppAdapter(var appList: List<AppInfo>,
             view.translationX = view.width.toFloat()
             view.animate()
                 .translationX(0f)
-                .setDuration(800)
+                .setDuration(300)
                 .withEndAction {
                     dispatchAddFinished(holder)
                 }

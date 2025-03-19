@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
 import com.giang.applock20.model.AppInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 
 object AppInfoUtil {
     var listAppInfo = ArrayList<AppInfo>()
@@ -14,9 +16,6 @@ object AppInfoUtil {
 
 
     fun initInstalledApps(context: Context) {
-        listAppInfo.clear()
-        listLockedAppInfo.clear()
-
         val packageManager = context.packageManager
         val mainIntent = Intent(Intent.ACTION_MAIN, null).apply {
             addCategory(Intent.CATEGORY_LAUNCHER)
@@ -31,9 +30,9 @@ object AppInfoUtil {
                 val packageName : String = activityInfo.packageName
 
                 listAppInfo.add(AppInfo(icon, name, packageName, false))
+
             }
         }
-
         listAppInfo.sortWith(compareBy { it.name })
     }
 
