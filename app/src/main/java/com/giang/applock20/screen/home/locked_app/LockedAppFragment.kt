@@ -1,19 +1,11 @@
 package com.giang.applock20.screen.home.locked_app
 
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.giang.applock20.base.BaseFragment
-import com.giang.applock20.dao.AppInfoDatabase
 import com.giang.applock20.databinding.FragmentLockedAppsBinding
 import com.giang.applock20.util.AppInfoUtil
-import com.giang.applock20.util.AppInfoUtil.listAppInfo
-import com.giang.applock20.util.AppInfoUtil.listLockedAppInfo
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-
 
 class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
 
@@ -21,7 +13,7 @@ class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
 
     override fun onResume() {
         super.onResume()
-        lockedAppAdapter.setNewList(listLockedAppInfo)
+        lockedAppAdapter.setNewList(AppInfoUtil.listLockedAppInfo)
 
     }
 
@@ -29,26 +21,19 @@ class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
         return FragmentLockedAppsBinding.inflate(layoutInflater)
     }
 
-    override fun initData() {
-
-    }
+    override fun initData() {}
 
     override fun setupView() {
         binding.apply {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-            lockedAppAdapter = LockedAppAdapter(listLockedAppInfo) { clickedAppInfo ->
-                if(!listAppInfo.contains(clickedAppInfo)) {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        val db = AppInfoDatabase.getInstance(requireContext())
-                        db.appInfoDAO().updateAppLockStatus(clickedAppInfo.packageName, false)
-                    }
-
-                    val tempList = listLockedAppInfo.filterNot { it == clickedAppInfo }
-                    AppInfoUtil.insertSortedAppInfo(listAppInfo, clickedAppInfo)
-
-                    lockedAppAdapter.setNewList(tempList)
-                    listLockedAppInfo.remove(clickedAppInfo)
+            lockedAppAdapter = LockedAppAdapter(AppInfoUtil.listLockedAppInfo) { clickedAppInfo ->
+                AppInfoUtil.transferAppInfo(
+                    requireContext(),
+                    clickedAppInfo,
+                    AppInfoUtil.listAppInfo,
+                    AppInfoUtil.listLockedAppInfo) {
+                    lockedAppAdapter.setNewList(it)
                 }
             }
             recyclerView.adapter = lockedAppAdapter
@@ -62,7 +47,12 @@ class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    filterList(newText ?: "")
+                    AppInfoUtil.filterList(
+                        requireContext(),
+                        newText ?: "",
+                        AppInfoUtil.listLockedAppInfo) {
+                        lockedAppAdapter.setNewList(it)
+                    }
                     return true
                 }
             })
@@ -71,20 +61,5 @@ class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
 
     }
 
-    private fun filterList(text : String) {
-        val filteredList = listLockedAppInfo.filter {
-            it.name.lowercase().contains(text.lowercase())
-        }
-
-        lockedAppAdapter.setNewList(filteredList)
-        if (filteredList.isEmpty()) Toast.makeText(
-            requireContext(),
-            "No data found",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
-    override fun handleEvent() {
-
-    }
+    override fun handleEvent() {}
 }

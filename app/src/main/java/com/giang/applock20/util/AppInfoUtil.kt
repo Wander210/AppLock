@@ -6,9 +6,15 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.giang.applock20.dao.AppInfoDatabase
 import com.giang.applock20.model.AppInfo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 object AppInfoUtil {
     var listAppInfo = ArrayList<AppInfo>()
@@ -37,9 +43,47 @@ object AppInfoUtil {
     }
 
     //Binary sort
-    fun insertSortedAppInfo(sortedList: MutableList<AppInfo>, newApp: AppInfo) {
+    private fun insertSortedAppInfo(sortedList: MutableList<AppInfo>, newApp: AppInfo) {
         val index = sortedList.binarySearchBy(newApp.name) { it.name }
         val insertIndex = if (index >= 0) index else -index - 1
         sortedList.add(insertIndex, newApp)
+    }
+
+    fun transferAppInfo(context: Context,
+                        appInfo: AppInfo,
+                        receiveList: MutableList<AppInfo>,
+                        sendList: MutableList<AppInfo>,
+                        setNewList: (List<AppInfo>) -> Unit) {
+        // Avoid adding the same app to listLockedAppInfo multiple times when the user clicks repeatedly
+        if(!receiveList.contains(appInfo)) {
+            //Update the database
+            CoroutineScope(Dispatchers.IO).launch {
+                val db = AppInfoDatabase.getInstance(context)
+                db.appInfoDAO().updateAppLockStatus(appInfo.packageName, true)
+            }
+
+            insertSortedAppInfo(receiveList, appInfo)
+
+            //Ensure that DiffUtil can accurately detect changes between the old and new lists
+            val tempList = sendList.filterNot { it == appInfo }
+            setNewList(tempList)
+            sendList.remove(appInfo)
+        }
+    }
+
+    fun filterList(context: Context,
+                   text : String,
+                   filteredList: MutableList<AppInfo>,
+                   setNewList: (List<AppInfo>) -> Unit) {
+        val tempList = filteredList.filter {
+            it.name.lowercase().contains(text.lowercase())
+        }
+
+        setNewList(tempList)
+        if (tempList.isEmpty()) Toast.makeText(
+            context,
+            "No data found",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

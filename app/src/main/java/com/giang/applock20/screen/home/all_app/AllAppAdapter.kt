@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.giang.applock20.databinding.ItemAppBinding
 import com.giang.applock20.model.AppInfo
 
-class AllAppAdapter(var appList: List<AppInfo>,
-                    private val onItemClick: (AppInfo) -> Unit
-) :
-    RecyclerView.Adapter<AllAppAdapter.AppItemViewHolder>() {
+class AllAppAdapter(
+    var appList: List<AppInfo>,
+    private val onItemClick: (AppInfo) -> Unit
+) : RecyclerView.Adapter<AllAppAdapter.AppItemViewHolder>() {
 
     private lateinit var itemView: ItemAppBinding
+    
+    private var lastClickTime: Long = 0L
+    private val CLICK_INTERVAL = 800L
 
     fun setNewList(newList: List<AppInfo>) {
         val diffResult = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
@@ -22,7 +25,8 @@ class AllAppAdapter(var appList: List<AppInfo>,
             override fun getNewListSize(): Int = newList.size
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return appList[oldItemPosition].packageName == newList[newItemPosition].packageName
+                return appList[oldItemPosition].packageName ==
+                        newList[newItemPosition].packageName
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -34,18 +38,23 @@ class AllAppAdapter(var appList: List<AppInfo>,
         diffResult.dispatchUpdatesTo(this)
     }
 
-    inner class AppItemViewHolder(private val binding: ItemAppBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class AppItemViewHolder(private val binding: ItemAppBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(app: AppInfo) {
-            binding.apply{
+            binding.apply {
                 imgAppIcon.setImageDrawable(app.icon)
                 tvAppName.text = app.name
                 itemView.setOnClickListener {
-                    app.isLocked = true
-                    onItemClick(app)
+                    // Check the time interval before processing the click
+                    val currentTime = System.currentTimeMillis()
+                    if (currentTime - lastClickTime >= CLICK_INTERVAL) {
+                        lastClickTime = currentTime
+                        app.isLocked = true
+                        onItemClick(app)
+                    }
                 }
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppItemViewHolder {
@@ -55,14 +64,11 @@ class AllAppAdapter(var appList: List<AppInfo>,
 
     override fun onBindViewHolder(holder: AppItemViewHolder, position: Int) {
         holder.itemView.translationX = 0f
-
         val app = appList[position]
         holder.bind(app)
-
     }
 
     override fun getItemCount(): Int = appList.size
-
 
     inner class SlideOutRightItemAnimator : DefaultItemAnimator() {
         override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
