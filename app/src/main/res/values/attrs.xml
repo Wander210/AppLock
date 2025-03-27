@@ -24,4 +24,9 @@
         <attr format="color" name="endColor"/>
         <attr format="float" name="angle"/>
     </declare-styleable>
+
+    <attr name="background_color_1" format="color"/>
+    <attr name="background_color_2" format="color"/>
+    <attr name="background_color_3" format="color"/>
+    <attr name="text_color_1" format="color"/>
 </resources>

@@ -58,6 +58,7 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
                 languageAdapter.updateSelectedPosition(it)
             }
         }
+        //...The case when the user has not selected any item yet.
         curLanguage?.let {
             languageAdapter.updateSelectedPosition(it)
         }
