@@ -35,4 +35,23 @@
     <string name="select_all">Select All</string>
     <string name="remove_all">Remove All</string>
     <string name="lock">Lock</string>
+    <string name="setting">Settings</string>
+    <string name="remove_all_ads">Remove all ads</string>
+    <string name="password">Password</string>
+    <string name="security_questions">Security questions</string>
+    <string name="password_type">Password type</string>
+    <string name="lock_new_app">Lock new app</string>
+    <string name="hide_pattern_draw_path">Hide pattern draw path</string>
+    <string name="change_password">Change password</string>
+    <string name="general">General</string>
+    <string name="icon_camouflage">Icon camouflage</string>
+    <string name="app_lock">App lock</string>
+    <string name="vibration_on_input">Vibration on input</string>
+    <string name="relock_setting">Relock setting</string>
+    <string name="unistall_protection">Unistall protection</string>
+    <string name="others">Others</string>
+    <string name="change_languages">Change languages</string>
+    <string name="rate_this_app">Rate this app</string>
+    <string name="feedback">Feedback</string>
+    <string name="share_with_friends">Share with friends</string>
 </resources>

@@ -15,7 +15,7 @@ import com.giang.applock20.databinding.ActivitySplashBinding
 import com.giang.applock20.model.AppInfo
 import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.screen.language.LanguageActivity
-import com.giang.applock20.screen.validate_pattern_lock.LockPatternActivity
+import com.giang.applock20.screen.validate_lock_pattern.LockPatternActivity
 import com.giang.applock20.util.AppInfoUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

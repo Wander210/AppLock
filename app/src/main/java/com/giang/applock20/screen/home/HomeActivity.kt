@@ -1,5 +1,6 @@
 package com.giang.applock20.screen.home
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Shader
 import android.text.SpannableString
@@ -12,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.databinding.ActivityHomeBinding
+import com.giang.applock20.screen.setting.SettingActivity
 import com.google.android.material.tabs.TabLayout
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
@@ -49,6 +51,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                 }
+            })
+
+            btnSetting.setOnClickListener({
+                startActivity(Intent(this@HomeActivity, SettingActivity::class.java))
+
             })
         }
     }

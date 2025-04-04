@@ -1,9 +1,8 @@
-package com.giang.applock20.screen.validate_pattern_lock
+package com.giang.applock20.screen.validate_lock_pattern
 
 import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import com.giang.applock20.databinding.ActivityLockPatternBinding
 import com.giang.applock20.preference.MyPreferences

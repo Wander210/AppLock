@@ -24,17 +24,17 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
         var temp: Language? = null
         languageList.addAll(
             listOf(
-                Language(0, getString(R.string.english), R.drawable.english_ic, "en"),
-                Language(1, getString(R.string.korean), R.drawable.korean_ic, "kr"),
-                Language(2, getString(R.string.portuguese), R.drawable.portugal_ic, "pt"),
-                Language(3, getString(R.string.spanish), R.drawable.spanish_ic, "es"),
-                Language(4, getString(R.string.japanese), R.drawable.japanese_ic, "ja"),
-                Language(5, getString(R.string.german), R.drawable.german_ic, "de"),
-                Language(6, getString(R.string.polish), R.drawable.polish_ic, "pl"),
-                Language(7, getString(R.string.italian), R.drawable.italian_ic, "it"),
-                Language(8, getString(R.string.french), R.drawable.french_ic, "fr"),
-                Language(9, getString(R.string.hindi), R.drawable.hindi_ic, "hi"),
-                Language(10, getString(R.string.vietnamese), R.drawable.vietnamese_ic, "vi")
+                Language(0, getString(R.string.english), R.drawable.ic_english, "en"),
+                Language(1, getString(R.string.korean), R.drawable.ic_korean, "kr"),
+                Language(2, getString(R.string.portuguese), R.drawable.ic_portugal, "pt"),
+                Language(3, getString(R.string.spanish), R.drawable.ic_spanish, "es"),
+                Language(4, getString(R.string.japanese), R.drawable.ic_japanese, "ja"),
+                Language(5, getString(R.string.german), R.drawable.ic_german, "de"),
+                Language(6, getString(R.string.polish), R.drawable.ic_polish, "pl"),
+                Language(7, getString(R.string.italian), R.drawable.ic_italian, "it"),
+                Language(8, getString(R.string.french), R.drawable.ic_french, "fr"),
+                Language(9, getString(R.string.hindi), R.drawable.ic_hindi, "hi"),
+                Language(10, getString(R.string.vietnamese), R.drawable.ic_vietnamese, "vi")
             )
         )
 

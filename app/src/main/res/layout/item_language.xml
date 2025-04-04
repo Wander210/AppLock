@@ -13,7 +13,7 @@
         android:id="@+id/imgLanguageIcon"
         android:layout_width="@dimen/_38sdp"
         android:layout_height="@dimen/_38sdp"
-        android:src="@drawable/english_ic"
+        android:src="@drawable/ic_english"
         android:layout_marginEnd="16dp"
         android:contentDescription="@null" />
 
