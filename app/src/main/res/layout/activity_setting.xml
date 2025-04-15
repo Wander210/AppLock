@@ -47,10 +47,12 @@
         android:paddingHorizontal="@dimen/_16sdp"
         android:paddingTop="@dimen/_16sdp"
         android:paddingBottom="@dimen/_60sdp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/top_bar">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -116,6 +118,19 @@
                 app:layout_constraintStart_toStartOf="@id/itemSecurityQuestions"
                 app:layout_constraintTop_toTopOf="@id/itemSecurityQuestions" />
 
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgChevron1"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_chevron"
+                app:avdSecond="@drawable/avd_chevron_reverse"
+                app:layout_constraintBottom_toBottomOf="@id/itemSecurityQuestions"
+                app:layout_constraintEnd_toEndOf="@id/itemSecurityQuestions"
+                app:layout_constraintTop_toTopOf="@id/itemSecurityQuestions" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -150,13 +165,27 @@
                 app:layout_constraintStart_toStartOf="@id/itemPasswordType"
                 app:layout_constraintTop_toTopOf="@id/itemPasswordType" />
 
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgChevron2"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_chevron"
+
+                app:avdSecond="@drawable/avd_chevron_reverse"
+                app:layout_constraintBottom_toBottomOf="@id/itemPasswordType"
+                app:layout_constraintEnd_toEndOf="@id/itemPasswordType"
+                app:layout_constraintTop_toTopOf="@id/itemPasswordType" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/inter_semi_bold"
-                android:textColor="@color/black"
                 android:text="@string/password_type"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="@id/itemPasswordType"
                 app:layout_constraintStart_toEndOf="@id/imgPasswordType"
@@ -182,6 +211,20 @@
                 android:src="@drawable/ic_fingerprint"
                 app:layout_constraintBottom_toBottomOf="@id/itemFingerprintUnlock"
                 app:layout_constraintStart_toStartOf="@id/itemFingerprintUnlock"
+                app:layout_constraintTop_toTopOf="@id/itemFingerprintUnlock" />
+
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgToggle1"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_toggle_reverse"
+
+                app:avdSecond="@drawable/avd_toggle"
+                app:layout_constraintBottom_toBottomOf="@id/itemFingerprintUnlock"
+                app:layout_constraintEnd_toEndOf="@id/itemFingerprintUnlock"
                 app:layout_constraintTop_toTopOf="@id/itemFingerprintUnlock" />
 
             <TextView
@@ -218,6 +261,20 @@
                 app:layout_constraintStart_toStartOf="@id/itemLockNewApp"
                 app:layout_constraintTop_toTopOf="@id/itemLockNewApp" />
 
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgToggle2"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_toggle_reverse"
+
+                app:avdSecond="@drawable/avd_toggle"
+                app:layout_constraintBottom_toBottomOf="@id/itemLockNewApp"
+                app:layout_constraintEnd_toEndOf="@id/itemLockNewApp"
+                app:layout_constraintTop_toTopOf="@id/itemLockNewApp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -252,6 +309,20 @@
                 app:layout_constraintStart_toStartOf="@id/itemHidePatternDrawPath"
                 app:layout_constraintTop_toTopOf="@id/itemHidePatternDrawPath" />
 
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgToggle3"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_toggle_reverse"
+
+                app:avdSecond="@drawable/avd_toggle"
+                app:layout_constraintBottom_toBottomOf="@id/itemHidePatternDrawPath"
+                app:layout_constraintEnd_toEndOf="@id/itemHidePatternDrawPath"
+                app:layout_constraintTop_toTopOf="@id/itemHidePatternDrawPath" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -284,6 +355,20 @@
                 android:src="@drawable/ic_change_password"
                 app:layout_constraintBottom_toBottomOf="@id/itemChangePassword"
                 app:layout_constraintStart_toStartOf="@id/itemChangePassword"
+                app:layout_constraintTop_toTopOf="@id/itemChangePassword" />
+
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgChevron3"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_chevron"
+
+                app:avdSecond="@drawable/avd_chevron_reverse"
+                app:layout_constraintBottom_toBottomOf="@id/itemChangePassword"
+                app:layout_constraintEnd_toEndOf="@id/itemChangePassword"
                 app:layout_constraintTop_toTopOf="@id/itemChangePassword" />
 
             <TextView
@@ -333,6 +418,20 @@
                 app:layout_constraintStart_toStartOf="@id/itemIconCamouflage"
                 app:layout_constraintTop_toTopOf="@id/itemIconCamouflage" />
 
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgChevron4"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_chevron"
+
+                app:avdSecond="@drawable/avd_chevron_reverse"
+                app:layout_constraintBottom_toBottomOf="@id/itemIconCamouflage"
+                app:layout_constraintEnd_toEndOf="@id/itemIconCamouflage"
+                app:layout_constraintTop_toTopOf="@id/itemIconCamouflage" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -365,6 +464,20 @@
                 android:src="@drawable/ic_app_lock"
                 app:layout_constraintBottom_toBottomOf="@id/itemAppLock"
                 app:layout_constraintStart_toStartOf="@id/itemAppLock"
+                app:layout_constraintTop_toTopOf="@id/itemAppLock" />
+
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgToggle4"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_toggle_reverse"
+
+                app:avdSecond="@drawable/avd_toggle"
+                app:layout_constraintBottom_toBottomOf="@id/itemAppLock"
+                app:layout_constraintEnd_toEndOf="@id/itemAppLock"
                 app:layout_constraintTop_toTopOf="@id/itemAppLock" />
 
             <TextView
@@ -401,6 +514,20 @@
                 app:layout_constraintStart_toStartOf="@id/itemVibrationOnInput"
                 app:layout_constraintTop_toTopOf="@id/itemVibrationOnInput" />
 
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgToggle5"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_toggle_reverse"
+
+                app:avdSecond="@drawable/avd_toggle"
+                app:layout_constraintBottom_toBottomOf="@id/itemVibrationOnInput"
+                app:layout_constraintEnd_toEndOf="@id/itemVibrationOnInput"
+                app:layout_constraintTop_toTopOf="@id/itemVibrationOnInput" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -435,6 +562,20 @@
                 app:layout_constraintStart_toStartOf="@id/itemRelockSetting"
                 app:layout_constraintTop_toTopOf="@id/itemRelockSetting" />
 
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgChevron5"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_chevron"
+
+                app:avdSecond="@drawable/avd_chevron_reverse"
+                app:layout_constraintBottom_toBottomOf="@id/itemRelockSetting"
+                app:layout_constraintEnd_toEndOf="@id/itemRelockSetting"
+                app:layout_constraintTop_toTopOf="@id/itemRelockSetting" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -467,6 +608,20 @@
                 android:src="@drawable/ic_trash_bin"
                 app:layout_constraintBottom_toBottomOf="@id/itemUninstallProtection"
                 app:layout_constraintStart_toStartOf="@id/itemUninstallProtection"
+                app:layout_constraintTop_toTopOf="@id/itemUninstallProtection" />
+
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgToggle6"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_toggle_reverse"
+
+                app:avdSecond="@drawable/avd_toggle"
+                app:layout_constraintBottom_toBottomOf="@id/itemUninstallProtection"
+                app:layout_constraintEnd_toEndOf="@id/itemUninstallProtection"
                 app:layout_constraintTop_toTopOf="@id/itemUninstallProtection" />
 
             <TextView
@@ -515,14 +670,28 @@
                 app:layout_constraintStart_toStartOf="@id/itemChangeLanguages"
                 app:layout_constraintTop_toTopOf="@id/itemChangeLanguages" />
 
+            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
+                android:id="@+id/imgChevron6"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                app:avdFirst="@drawable/avd_chevron"
+
+                app:avdSecond="@drawable/avd_chevron_reverse"
+                app:layout_constraintBottom_toBottomOf="@id/itemChangeLanguages"
+                app:layout_constraintEnd_toEndOf="@id/itemChangeLanguages"
+                app:layout_constraintTop_toTopOf="@id/itemChangeLanguages" />
+
             <TextView
                 android:id="@+id/tvChangeLanguages"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/inter_semi_bold"
-                android:textColor="@color/black"
                 android:text="@string/change_languages"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="@id/itemChangeLanguages"
                 app:layout_constraintStart_toEndOf="@id/imgChangeLanguages"
@@ -557,8 +726,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/inter_semi_bold"
-                android:textColor="@color/black"
                 android:text="@string/share_with_friends"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintBottom_toBottomOf="@id/itemShareWithFriends"
                 app:layout_constraintStart_toEndOf="@id/imgShareWithFriends"
