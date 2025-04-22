@@ -63,6 +63,7 @@ class LockedAppAdapter(
         })
 
         lockedAppList = newList
+        booleanArray = BooleanArray(lockedAppList.size)
         diffResult.dispatchUpdatesTo(this)
     }
 

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.giang.applock20.R
 import com.giang.applock20.databinding.ItemAppBinding
 import com.giang.applock20.model.AppInfo
+import com.giang.applock20.util.AppInfoUtil.listAppInfo
 
 class AllAppAdapter(
     var appList: List<AppInfo>,
@@ -63,6 +64,7 @@ class AllAppAdapter(
         })
 
         appList = newList
+        booleanArray = BooleanArray(appList.size)
         diffResult.dispatchUpdatesTo(this)
     }
 
