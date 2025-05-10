@@ -3,9 +3,11 @@ package com.giang.applock20.screen.home
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Shader
+import android.os.Build
 import android.text.SpannableString
 import android.text.TextPaint
 import android.text.style.CharacterStyle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
@@ -14,6 +16,8 @@ import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.databinding.ActivityHomeBinding
 import com.giang.applock20.screen.setting.SettingActivity
+import com.giang.applock20.service.LockService
+import com.giang.applock20.util.PermissionChecker
 import com.google.android.material.tabs.TabLayout
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
@@ -26,6 +30,16 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun setupView() {
+        if (!PermissionChecker.checkUsageAccessPermission(this)) {
+            Log.e("HomeActivity", "Requesting Usage Access Permission")
+            PermissionChecker.requestUsageAccessPermission(this)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.e("ThoNH", "Starting LockService")
+            startForegroundService(Intent(this, LockService::class.java))
+        }
+
         binding.apply {
             viewPager2.adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {

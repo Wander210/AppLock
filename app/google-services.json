@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "137385923344",
+    "project_id": "applock20-41868",
+    "storage_bucket": "applock20-41868.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137385923344:android:92696569f9dfa9583b0b95",
+        "android_client_info": {
+          "package_name": "com.giang.applock20"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmLpjl8lDqszwMPK33cX8uFl4bfgznhwY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,6 @@
 package com.giang.applock20.screen.home.locked_app
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
