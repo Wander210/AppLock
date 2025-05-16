@@ -3,24 +3,40 @@ package com.giang.applock20.screen.home
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Shader
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
 import android.text.SpannableString
 import android.text.TextPaint
 import android.text.style.CharacterStyle
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.databinding.ActivityHomeBinding
 import com.giang.applock20.screen.setting.SettingActivity
-import com.giang.applock20.service.LockService
-import com.giang.applock20.util.PermissionChecker
+import com.giang.applock20.service.AppMonitorService
 import com.google.android.material.tabs.TabLayout
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
+
+    // Khai báo launcher ở cấp độ lớp
+    private val overlayPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (Settings.canDrawOverlays(this)) {
+            // Người dùng đã cấp quyền
+            // Thực hiện hành động cần thiết ở đây
+        } else {
+            Toast.makeText(this, "Bạn cần cấp quyền vẽ trên ứng dụng khác", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
     override fun getViewBinding(layoutInflater: LayoutInflater): ActivityHomeBinding {
         return ActivityHomeBinding.inflate(layoutInflater)
     }
@@ -30,20 +46,22 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun setupView() {
-        if (!PermissionChecker.checkUsageAccessPermission(this)) {
-            Log.e("HomeActivity", "Requesting Usage Access Permission")
-            PermissionChecker.requestUsageAccessPermission(this)
+        if (!Settings.canDrawOverlays(this)) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:$packageName")
+            )
+            overlayPermissionLauncher.launch(intent)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.e("ThoNH", "Starting LockService")
-            startForegroundService(Intent(this, LockService::class.java))
+            startForegroundService(Intent(this, AppMonitorService::class.java))
+        } else {
+            startService(Intent(this, AppMonitorService::class.java))
         }
-
         binding.apply {
             viewPager2.adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
                     tabLayout.getTabAt(position)?.select()

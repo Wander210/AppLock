@@ -31,4 +31,13 @@
     <style name="cursorColor" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="android:textCursorDrawable">@drawable/cursor</item>
     </style>
+
+    <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
 </resources>
