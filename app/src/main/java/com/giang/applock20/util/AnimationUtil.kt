@@ -9,7 +9,7 @@ import com.giang.applock20.custom.lock_pattern.PatternLockView
 import com.giang.applock20.custom.lock_pattern.PatternLockView.PatternViewMode
 
 object AnimationUtil {
-    fun setTextWrong(patternLockView: PatternLockView, textView: TextView, pattern:  MutableList<PatternLockView.Dot>?) {
+    fun setTextWrong(patternLockView: PatternLockView, textView: TextView?, pattern: MutableList<PatternLockView.Dot>?) {
         patternLockView.setPattern(PatternViewMode.WRONG, pattern)
         val animator = ObjectAnimator.ofFloat(
             textView,
@@ -18,11 +18,11 @@ object AnimationUtil {
         )
         animator.duration = 1000
 
-        textView.setTextColor(Color.RED)
+        textView?.setTextColor(Color.RED)
         animator.start()
 
         Handler(Looper.getMainLooper()).postDelayed({
-            textView.setTextColor(Color.BLACK)
+            textView?.setTextColor(Color.BLACK)
             patternLockView.clearPattern()
         }, 1000)
     }

@@ -1,9 +1,10 @@
 package com.giang.applock20.screen.home
 
+import android.app.AppOpsManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Shader
-import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.text.SpannableString
@@ -11,31 +12,20 @@ import android.text.TextPaint
 import android.text.style.CharacterStyle
 import android.view.LayoutInflater
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.databinding.ActivityHomeBinding
 import com.giang.applock20.screen.setting.SettingActivity
-import com.giang.applock20.service.AppMonitorService
+import com.giang.applock20.service.LockService
+import com.giang.applock20.util.PermissionUtils
 import com.google.android.material.tabs.TabLayout
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
-    // Khai báo launcher ở cấp độ lớp
-    private val overlayPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (Settings.canDrawOverlays(this)) {
-            // Người dùng đã cấp quyền
-            // Thực hiện hành động cần thiết ở đây
-        } else {
-            Toast.makeText(this, "Bạn cần cấp quyền vẽ trên ứng dụng khác", Toast.LENGTH_SHORT).show()
-        }
-    }
-
+    private lateinit var permissionUtils: PermissionUtils
 
     override fun getViewBinding(layoutInflater: LayoutInflater): ActivityHomeBinding {
         return ActivityHomeBinding.inflate(layoutInflater)
@@ -46,19 +36,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun setupView() {
-        if (!Settings.canDrawOverlays(this)) {
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:$packageName")
-            )
-            overlayPermissionLauncher.launch(intent)
-        }
+        permissionUtils = PermissionUtils(this)
+        // Yêu cầu các quyền cần thiết
+        checkAndRequestPermissions()
+        ContextCompat.startForegroundService(this, Intent(this, LockService::class.java))
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(Intent(this, AppMonitorService::class.java))
-        } else {
-            startService(Intent(this, AppMonitorService::class.java))
-        }
         binding.apply {
             viewPager2.adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -68,6 +50,17 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                     updateTabLayoutTextColor(position)
                 }
             })
+        }
+    }
+
+    private fun checkAndRequestPermissions() {
+        if (!permissionUtils.checkUsageStatsPermission()) {
+            permissionUtils.requestUsageStatsPermission()
+        }
+
+        // Kiểm tra quyền Overlay
+        if (!permissionUtils.checkOverlayPermission()) {
+            permissionUtils.requestOverlayPermission()
         }
     }
 
@@ -132,5 +125,27 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                 if (tabViewChild is TextView) tabViewChild.typeface = typeface
             }
         }
+    }
+
+    private fun checkUsageStatsPermission(): Boolean {
+        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            appOps.unsafeCheckOpNoThrow(
+                AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(),
+                packageName
+            )
+        } else {
+            appOps.checkOpNoThrow(
+                AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(),
+                packageName
+            )
+        }
+        return mode == AppOpsManager.MODE_ALLOWED
+    }
+
+    private fun requestUsageStatsPermission() {
+        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }
 }
