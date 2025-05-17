@@ -1,31 +1,24 @@
 package com.giang.applock20.service
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
-import android.app.usage.UsageEvents
-import android.app.usage.UsageStatsManager
+import android.accessibilityservice.AccessibilityService
 import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
-import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
+import android.view.accessibility.AccessibilityEvent
+import android.widget.ImageView
+import android.widget.TextView
 import com.giang.applock20.R
 import com.giang.applock20.custom.lock_pattern.PatternLockView
-import com.giang.applock20.custom.lock_pattern.PatternLockView.PatternViewMode
 import com.giang.applock20.custom.lock_pattern.listener.PatternLockViewListener
 import com.giang.applock20.preference.MyPreferences
-import com.giang.applock20.screen.home.HomeActivity
 import com.giang.applock20.util.AnimationUtil
 import com.giang.applock20.util.AppInfoUtil
 import com.google.gson.Gson
@@ -33,15 +26,10 @@ import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import java.util.concurrent.TimeUnit
 
-class LockService : Service() {
-    private val TAG = "LockService"
-    private val handler = Handler(Looper.getMainLooper())
-    private lateinit var usageStatsManager: UsageStatsManager
-    private var lastForegroundPackageName = ""
-    private val checkInterval = 500L // Kiểm tra mỗi 0.5 giây để phản ứng nhanh hơn
-
+class AppLockAccessibilityService : AccessibilityService() {
+    private val TAG = "AppLockAccessibility"
+    private var lastPackageName = ""
     private lateinit var windowManager: WindowManager
     private var overlayView: View? = null
     private var isOverlayShown = false
@@ -51,33 +39,12 @@ class LockService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        createNotificationChannel()
-
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
-        usageStatsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        } else {
-            Log.e(TAG, "UsageStatsManager không được hỗ trợ trên thiết bị này")
-            return
-        }
 
         // Tải pattern từ SharedPreferences
         loadSavedPattern()
-    }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID,
-                "AppLock Service",
-                NotificationManager.IMPORTANCE_LOW
-            ).apply {
-                description = "Kênh thông báo cho AppLock foreground service"
-            }
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
-        }
+        Log.i(TAG, "AppLockAccessibilityService đã được khởi tạo")
     }
 
     private fun loadSavedPattern() {
@@ -89,72 +56,45 @@ class LockService : Service() {
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val notificationIntent = Intent(this, HomeActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("AppLock đang chạy")
-            .setContentText("Bảo vệ ứng dụng của bạn")
-            .setSmallIcon(R.drawable.applock_icon)      // icon bạn chuẩn bị trong drawable
-            .setContentIntent(pendingIntent)
-            .setOngoing(true)
-            .build()
-
-        // Chạy service ở chế độ foreground
-        startForeground(NOTIFICATION_ID, notification)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            startMonitoring()
-        }
-        return START_STICKY
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        Log.i(TAG, "AppLockAccessibilityService đã được kết nối")
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun startMonitoring() {
-        handler.post(object : Runnable {
-            override fun run() {
-                checkCurrentApp()
-                handler.postDelayed(this, checkInterval)
+    override fun onAccessibilityEvent(event: AccessibilityEvent) {
+        // Chỉ xử lý sự kiện WINDOW_STATE_CHANGED (khi chuyển ứng dụng)
+        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            val packageName = event.packageName?.toString()
+
+            // Nếu không có package name hoặc là package name của chính ứng dụng này, bỏ qua
+            if (packageName.isNullOrEmpty() || packageName == "com.giang.applock20") {
+                return
             }
-        })
-    }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun checkCurrentApp() {
-        val currentTime = System.currentTimeMillis()
-        val startTime = currentTime - TimeUnit.MINUTES.toMillis(1) // Lấy dữ liệu từ 1 phút trước
-
-        val usageEvents = usageStatsManager.queryEvents(startTime, currentTime)
-        val event = UsageEvents.Event()
-        var foregroundPackageName = ""
-
-        while (usageEvents.hasNextEvent()) {
-            usageEvents.getNextEvent(event)
-            if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND) {
-                foregroundPackageName = event.packageName
+            // Nếu package name giống với package name cuối cùng đã xử lý, bỏ qua
+            if (packageName == lastPackageName) {
+                return
             }
-        }
 
-        if (foregroundPackageName.isNotEmpty() && foregroundPackageName != lastForegroundPackageName) {
-            val timestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
-            val logMessage = "[$timestamp] Ứng dụng được mở: $foregroundPackageName"
             val isLocked = AppInfoUtil.listLockedAppInfo.stream()
-                .anyMatch({ appInfo -> appInfo.packageName.equals(foregroundPackageName) })
+                .anyMatch { appInfo -> appInfo.packageName == packageName }
+
+            Log.d(TAG, "Is app locked: $isLocked for package: $packageName")
 
             // Ghi log
+            val timestamp = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())
+            val logMessage = "[$timestamp] Ứng dụng được mở: $packageName"
             Log.i(TAG, logMessage)
             writeToLogFile(logMessage)
 
             if (isLocked) {
-                showPatternLockOverlay(foregroundPackageName)
+                Log.d(TAG, "Attempting to show overlay for: $packageName")
+                showPatternLockOverlay(packageName)
             } else if (isOverlayShown) {
                 hideOverlay()
             }
 
-            lastForegroundPackageName = foregroundPackageName
+            lastPackageName = packageName
         }
     }
 
@@ -163,13 +103,12 @@ class LockService : Service() {
 
         try {
             val inflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            // Sử dụng layout lock_pattern_overlay.xml (bạn cần tạo file layout này)
             overlayView = inflater.inflate(R.layout.lock_pattern_overlay, null)
 
             // Lấy các view từ layout
             val patternLockView = overlayView?.findViewById<PatternLockView>(R.id.pattern_lock_view)
-            val tvAppName = overlayView?.findViewById<android.widget.TextView>(R.id.tv_app_name)
-            val tvDrawPattern = overlayView?.findViewById<android.widget.TextView>(R.id.tv_draw_an_unlock_pattern)
+            val tvAppName = overlayView?.findViewById<TextView>(R.id.tv_app_name)
+            val tvDrawPattern = overlayView?.findViewById<TextView>(R.id.tv_draw_an_unlock_pattern)
 
             // Cập nhật tên ứng dụng
             tvAppName?.text = getAppNameFromPackage(packageName)
@@ -192,9 +131,9 @@ class LockService : Service() {
                         AnimationUtil.setTextWrong(patternLockView, tvDrawPattern, tempPattern)
                     } else {
                         // Pattern đúng, ẩn overlay
-                        patternLockView.setPattern(PatternViewMode.CORRECT, tempPattern)
+                        patternLockView.setPattern(PatternLockView.PatternViewMode.CORRECT, tempPattern)
 
-                        // Thêm độ trễ ngắn để người dùng thấy mẫu hình đúng đã được vẽ
+                        // Thêm độ trễ ngắn để người dùng thấy mẫu hình đúng
                         Handler(Looper.getMainLooper()).postDelayed({
                             hideOverlay()
                         }, 300)
@@ -206,7 +145,7 @@ class LockService : Service() {
                 }
             })
 
-            // Thiết lập tùy chọn cho overlay
+            // Thiết lập tùy chọn cho overlay - Thay đổi từ TYPE_ACCESSIBILITY_OVERLAY sang TYPE_APPLICATION_OVERLAY
             val params = WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
@@ -217,24 +156,26 @@ class LockService : Service() {
                 },
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
                         or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                        or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
                         or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
                 PixelFormat.TRANSLUCENT
             )
 
             params.gravity = Gravity.CENTER
 
-            // Hiển thị overlay
-            windowManager.addView(overlayView, params)
-            isOverlayShown = true
+            // Hiển thị overlay - Thêm try-catch để bắt lỗi cụ thể
+            try {
+                windowManager.addView(overlayView, params)
+                isOverlayShown = true
 
-            // Cập nhật flag để có thể tương tác với overlay
-            params.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-            windowManager.updateViewLayout(overlayView, params)
+                // Cập nhật flag để có thể tương tác với overlay
+                params.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                windowManager.updateViewLayout(overlayView, params)
 
-            Log.i(TAG, "Hiển thị màn hình khóa cho ứng dụng: $packageName")
-
+                Log.d(TAG, "Đã hiển thị overlay thành công")
+            } catch (e: Exception) {
+                Log.e(TAG, "Lỗi khi addView: ${e.message}", e)
+                isOverlayShown = false
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Lỗi khi hiển thị màn hình khóa: ${e.message}")
         }
@@ -279,24 +220,18 @@ class LockService : Service() {
         }
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
+    override fun onInterrupt() {
+        Log.i(TAG, "AppLockAccessibilityService bị gián đoạn")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacksAndMessages(null)
 
         // Đảm bảo ẩn overlay khi service bị hủy
         if (isOverlayShown) {
             hideOverlay()
         }
 
-        Log.i(TAG, "LockService đã bị hủy")
-    }
-
-    companion object {
-        private const val CHANNEL_ID = "applock_service_channel"
-        private const val NOTIFICATION_ID = 1
+        Log.i(TAG, "AppLockAccessibilityService đã bị hủy")
     }
 }

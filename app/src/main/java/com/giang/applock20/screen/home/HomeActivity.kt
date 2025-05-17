@@ -12,14 +12,12 @@ import android.text.TextPaint
 import android.text.style.CharacterStyle
 import android.view.LayoutInflater
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.databinding.ActivityHomeBinding
 import com.giang.applock20.screen.setting.SettingActivity
-import com.giang.applock20.service.LockService
 import com.giang.applock20.util.PermissionUtils
 import com.google.android.material.tabs.TabLayout
 
@@ -39,7 +37,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         permissionUtils = PermissionUtils(this)
         // Yêu cầu các quyền cần thiết
         checkAndRequestPermissions()
-        ContextCompat.startForegroundService(this, Intent(this, LockService::class.java))
+        val intent = Intent(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        this.startActivity(intent)
 
         binding.apply {
             viewPager2.adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
