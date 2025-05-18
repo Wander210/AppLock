@@ -38,7 +38,7 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
     override fun setupView() {
         binding.apply {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            allAppAdapter = AllAppAdapter(listAppInfo) { clickedAppInfo ->
+            allAppAdapter = AllAppAdapter(requireContext(), listAppInfo) { clickedAppInfo ->
                 allAppAdapter.updateSelectedPosition(clickedAppInfo)
                 updateBtnLock()
 

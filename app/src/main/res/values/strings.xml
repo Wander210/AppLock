@@ -58,5 +58,6 @@
     <string name="notification_permission_need_description">Please enable your permissions to use app locker.</string>
     <string name="permission_notification">Your version device is android 13, please allow the app to access permission your notification!.</string>
     <string name="not_now">Not now</string>
+    <string name="change_language">Change language</string>
 
 </resources>

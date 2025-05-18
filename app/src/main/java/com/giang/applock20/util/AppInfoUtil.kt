@@ -2,6 +2,7 @@ package com.giang.applock20.util
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.Drawable
 import android.widget.Toast
@@ -31,7 +32,7 @@ object AppInfoUtil {
                 val icon: Drawable = activityInfo.loadIcon(packageManager)
                 val packageName: String = activityInfo.packageName
 
-                listAppInfo.add(AppInfo(icon, name, packageName, false))
+                listAppInfo.add(AppInfo(name, packageName, false))
 
             }
         }
@@ -62,5 +63,15 @@ object AppInfoUtil {
             "No data found",
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    fun getAppIcon(context: Context, packageName: String): Drawable? {
+        return try {
+            val pm = context.packageManager
+            pm.getApplicationIcon(packageName)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+            null
+        }
     }
 }

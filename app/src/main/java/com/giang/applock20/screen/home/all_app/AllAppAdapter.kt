@@ -1,5 +1,6 @@
 package com.giang.applock20.screen.home.all_app
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,9 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.giang.applock20.R
 import com.giang.applock20.databinding.ItemAppBinding
 import com.giang.applock20.model.AppInfo
+import com.giang.applock20.util.AppInfoUtil
 import com.giang.applock20.util.AppInfoUtil.listAppInfo
 
 class AllAppAdapter(
+    val context: Context,
     var appList: List<AppInfo>,
     private val onItemClick: (AppInfo) -> Unit
 ) : RecyclerView.Adapter<AllAppAdapter.AppItemViewHolder>() {
@@ -85,7 +88,7 @@ class AllAppAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(app: AppInfo, position: Int) {
             binding.apply {
-                imgAppIcon.setImageDrawable(app.icon)
+                imgAppIcon.setImageDrawable(AppInfoUtil.getAppIcon(context, app.packageName))
                 tvAppName.text = app.name
                 tvAppName.setTextColor(
                     if (booleanArray[position]) Color.parseColor("#FFFFFF") else Color.parseColor("#131936")

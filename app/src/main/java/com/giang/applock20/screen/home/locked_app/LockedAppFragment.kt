@@ -39,7 +39,7 @@ class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
         binding.apply {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-            lockedAppAdapter = LockedAppAdapter(listLockedAppInfo) { clickedAppInfo ->
+            lockedAppAdapter = LockedAppAdapter(requireContext(), listLockedAppInfo) { clickedAppInfo ->
                 lockedAppAdapter.updateSelectedPosition(clickedAppInfo)
                 updateBtnLock()
             }

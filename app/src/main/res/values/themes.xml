@@ -6,6 +6,7 @@
         <item name="android:textColorHint">@color/grey</item>
         <item name="autoCompleteTextViewStyle">@style/cursorColor</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="29">false</item>
     </style>
 
     <style name="Theme.DarkTheme" parent="Base.Theme.AppLock20">

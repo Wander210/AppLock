@@ -56,10 +56,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     private fun checkAndRequestPermissions() {
         if (!permissionUtils.checkUsageStatsPermission()) {
             permissionUtils.requestUsageStatsPermission()
-        }
-
-        // Kiểm tra quyền Overlay
-        if (!permissionUtils.checkOverlayPermission()) {
+        } else if (!permissionUtils.checkOverlayPermission()) {
+            // Kiểm tra quyền Overlay
             permissionUtils.requestOverlayPermission()
         }
     }

@@ -1,5 +1,6 @@
 package com.giang.applock20.screen.home.locked_app
 
+import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.giang.applock20.R
 import com.giang.applock20.databinding.ItemAppBinding
 import com.giang.applock20.model.AppInfo
+import com.giang.applock20.util.AppInfoUtil
 
 class LockedAppAdapter(
+    val context: Context,
     var lockedAppList: List<AppInfo>,
     private val onItemClick: (AppInfo) -> Unit
 ) : RecyclerView.Adapter<LockedAppAdapter.AppItemViewHolder>() {
@@ -84,7 +87,7 @@ class LockedAppAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(app: AppInfo, position: Int) {
             binding.apply {
-                imgAppIcon.setImageDrawable(app.icon)
+                imgAppIcon.setImageDrawable(AppInfoUtil.getAppIcon(context, app.packageName))
                 tvAppName.text = app.name
                 tvAppName.setTextColor(
                     if (booleanArray[position]) Color.parseColor("#FFFFFF") else Color.parseColor("#131936")
