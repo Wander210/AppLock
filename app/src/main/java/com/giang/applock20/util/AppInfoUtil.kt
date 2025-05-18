@@ -29,7 +29,6 @@ object AppInfoUtil {
             val activityInfo = resolveInfo.activityInfo
             if (activityInfo != null) {
                 val name: String = activityInfo.loadLabel(packageManager).toString()
-                val icon: Drawable = activityInfo.loadIcon(packageManager)
                 val packageName: String = activityInfo.packageName
 
                 listAppInfo.add(AppInfo(name, packageName, false))

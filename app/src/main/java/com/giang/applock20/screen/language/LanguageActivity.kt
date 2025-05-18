@@ -8,6 +8,8 @@ import com.giang.applock20.databinding.ActivityLanguageBinding
 import com.giang.applock20.model.Language
 import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.base.BaseActivity
+import com.giang.applock20.constant.EXTRA_FROM_SPLASH
+import com.giang.applock20.screen.home.HomeActivity
 import com.giang.applock20.screen.set_new_lock_pattern.SetLockPatternActivity
 
 class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
@@ -69,8 +71,16 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
         binding.btnDone.setOnClickListener {
             curLanguage?.let {
                 MyPreferences.write(MyPreferences.PREF_LANGUAGE, it)
-                startActivity(Intent(this@LanguageActivity, SetLockPatternActivity::class.java))
-                finish()
+                if (intent.getBooleanExtra(EXTRA_FROM_SPLASH, false)) {
+                    startActivity(Intent(this@LanguageActivity, SetLockPatternActivity::class.java))
+                    finish()
+                } else {
+                    startActivity(Intent(this@LanguageActivity, HomeActivity::class.java).apply {
+                        // clear activity cu trong stack
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    })
+                    finish()
+                }
             }
         }
     }
