@@ -1,7 +1,11 @@
 package com.giang.applock20.screen.setting
 
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
+import android.widget.Toast
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.constant.EXTRA_FROM_SPLASH
 import com.giang.applock20.databinding.ActivitySettingBinding
@@ -28,8 +32,16 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
                 updateSwitchHidePatternUI()
             }
 
-            binding.btnChangeLanguages.setOnClickListener {
+            btnChangeLanguages.setOnClickListener {
                 startActivity(Intent(this@SettingActivity, LanguageActivity::class.java))
+            }
+
+            itemShareWithFriends.setOnClickListener {
+                shareApp(this@SettingActivity)
+            }
+
+            itemFeedback.setOnClickListener {
+                sendFeedback(this@SettingActivity)
             }
 
             imgBack.setOnClickListener {
@@ -37,6 +49,41 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
             }
         }
     }
+
+    fun shareApp(context: Context) {
+        val appPackageName = context.packageName
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "Hãy thử ứng dụng này nhé: https://play.google.com/store/apps/details?id=$appPackageName"
+            )
+        }
+
+        val chooser = Intent.createChooser(shareIntent, "Chia sẻ ứng dụng qua")
+        // Kiểm tra nếu có ứng dụng xử lý được intent
+        if (shareIntent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(chooser)
+        } else {
+            Toast.makeText(context, "Không tìm thấy ứng dụng để chia sẻ", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun sendFeedback(context: Context) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:") // Only email apps should handle this
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("hoaocshit@gmail.com"))
+            putExtra(Intent.EXTRA_SUBJECT, "Feedback for Your App")
+            putExtra(Intent.EXTRA_TEXT, "Hello,\n\nI would like to provide the following feedback:\n")
+        }
+
+        try {
+            context.startActivity(Intent.createChooser(intent, "Send Feedback"))
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(context, "No email app found to send feedback", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     private fun updateSwitchHidePatternUI() {
         binding.imgToggle.setImageResource(
