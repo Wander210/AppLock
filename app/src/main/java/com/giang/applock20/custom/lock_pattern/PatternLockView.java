@@ -35,6 +35,7 @@ import com.giang.applock20.R;
 import com.giang.applock20.custom.lock_pattern.utils.PatternLockUtils;
 import com.giang.applock20.custom.lock_pattern.listener.PatternLockViewListener;
 import com.giang.applock20.custom.lock_pattern.utils.ResourceUtils;
+import com.giang.applock20.preference.MyPreferences;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -275,6 +276,8 @@ public class PatternLockView extends View {
         setMeasuredDimension(newWidth, newHeight);
     }
 
+    public Boolean isHidePattern = MyPreferences.INSTANCE.read(MyPreferences.IS_HIDE_DRAW_PATTERN, false);
+
     @Override
     protected void onDraw(Canvas canvas) {
         ArrayList<Dot> pattern = mPattern;
@@ -320,7 +323,7 @@ public class PatternLockView extends View {
 
         // Draw the path of the pattern (unless we are in stealth mode)
         boolean drawPath = !mInStealthMode;
-        if (drawPath) {
+        if (drawPath && !isHidePattern) {
             mPathPaint.setColor(getPathColor());
 
             boolean anyCircles = false;
@@ -1128,7 +1131,7 @@ public class PatternLockView extends View {
     }
 
     private LinearGradient getCurrentGradientColor(boolean partOfPattern, float centerX, float centerY, float size) {
-        if (!partOfPattern) {
+        if (!partOfPattern || isHidePattern) {
             return getCustomGradient(centerX, centerY, size, "#C5C5C5", "#C5C5C5");
         } else if (mPatternViewMode == PatternViewMode.WRONG) {
             return getCustomGradient(centerX, centerY, size, "#FF4545", "#C63636");

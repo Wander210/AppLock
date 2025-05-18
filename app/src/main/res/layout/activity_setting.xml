@@ -120,19 +120,16 @@
                 app:layout_constraintStart_toStartOf="@id/itemHidePatternDrawPath"
                 app:layout_constraintTop_toTopOf="@id/itemHidePatternDrawPath" />
 
-            <com.giang.applock20.screen.ReverseAnimatedVectorDrawableImageView
-                android:id="@+id/imgToggle3"
+            <ImageView
+                android:id="@+id/imgToggle"
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_toggle_inactive"
                 android:contentDescription="@null"
-                app:avdFirst="@drawable/avd_toggle_reverse"
-
-                app:avdSecond="@drawable/avd_toggle"
                 app:layout_constraintBottom_toBottomOf="@id/itemHidePatternDrawPath"
                 app:layout_constraintEnd_toEndOf="@id/itemHidePatternDrawPath"
-                app:layout_constraintTop_toTopOf="@id/itemHidePatternDrawPath" />
+               app:layout_constraintTop_toTopOf="@id/itemHidePatternDrawPath" />
 
             <TextView
                 android:layout_width="wrap_content"

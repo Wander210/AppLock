@@ -16,12 +16,12 @@ import com.giang.applock20.util.AppInfoUtil.listLockedAppInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
 
     private lateinit var allAppAdapter: AllAppAdapter
     private var checkBox: Boolean = false
-    private var lastButtonClickTime = 0L
 
     override fun onResume() {
         super.onResume()
@@ -44,6 +44,7 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
                     updateBtnLock()
                 }
             recyclerView.adapter = allAppAdapter
+            binding.recyclerView.itemAnimator = SlideOutRightItemAnimator()
 
             searchBar.clearFocus()
             searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -69,38 +70,35 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
     override fun handleEvent() {
         binding.apply {
             btnLock.setOnClickListener({
-                if (allAppAdapter.count != 0) {
+                if (allAppAdapter.mapSelectedApp.isNotEmpty()) {
                     val transferList: MutableList<AppInfo> = mutableListOf()
 
                     //Update the database
-                    //Guarantee that the lists do not change while iterating
-//                    val flagsSnapshot = allAppAdapter.booleanArray.copyOf()
-//                    val pkgSnapshot   = listAppInfo.toList()
-//
-//                    CoroutineScope(Dispatchers.IO).launch {
-//                        val db = AppInfoDatabase.getInstance(requireContext())
-//                        for(i in flagsSnapshot.indices) {
-//                            if(flagsSnapshot[i])
-//                                db.appInfoDAO().updateAppLockStatus(pkgSnapshot[i].packageName, true)
-//                        }
-//                    }
-//
-//                    //Update the locked app list
-//                    for(i in allAppAdapter.booleanArray.indices) {
-//                        if(allAppAdapter.booleanArray[i]) transferList.add(listAppInfo[i])
-//                    }
-//                    AppInfoUtil.insertSortedAppInfo(listLockedAppInfo, transferList)
-//
-//                    //Update the app list and ui
-//                    //Ensure that DiffUtil can accurately detect changes between the old and new lists
-//                    val tempList = listAppInfo.filterNot {it in transferList}
-//                    allAppAdapter.setNewList(tempList)
-//                    listAppInfo.clear()
-//                    listAppInfo.addAll(tempList)
-//
-//                    //Update the btnLock
-//                    allAppAdapter.count = 0
-//                    updateBtnLock()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val db = AppInfoDatabase.getInstance(requireContext())
+                        allAppAdapter.mapSelectedApp.forEach { (key, value) ->
+                            db.appInfoDAO().updateAppLockStatus(key, true)
+                        }
+                        //Update the locked app list
+                        listAppInfo.forEach {
+                            if (allAppAdapter.mapSelectedApp[it.packageName] != null) {
+                                transferList.add(it)
+                            }
+                        }
+                        AppInfoUtil.insertSortedAppInfo(listLockedAppInfo, transferList)
+
+                        //Update the app list and ui
+                        //Ensure that DiffUtil can accurately detect changes between the old and new lists
+                        withContext(Dispatchers.Main) {
+                            allAppAdapter.mapSelectedApp.clear()
+                            val tempList = listAppInfo.filterNot {it in transferList}
+                            allAppAdapter.setNewList(tempList)
+                            listAppInfo.clear()
+                            listAppInfo.addAll(tempList)
+                            //Update the btnLock
+                            updateBtnLock()
+                        }
+                    }
                 }
             })
 
@@ -127,7 +125,7 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
     @SuppressLint("SetTextI18n")
     fun updateBtnLock() {
         binding.apply {
-            if (allAppAdapter.count != 0) {
+            if (allAppAdapter.mapSelectedApp.isNotEmpty()) {
                 btnLock.setImageDrawable(
                     ContextCompat.getDrawable(
                         requireContext(),
@@ -135,7 +133,7 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
                     )
                 )
                 tvLock.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-                tvLock.text = "(${allAppAdapter.count}) Lock"
+                tvLock.text = "(${allAppAdapter.mapSelectedApp.size}) Lock"
             } else {
                 btnLock.setImageDrawable(
                     ContextCompat.getDrawable(

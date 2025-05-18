@@ -20,8 +20,7 @@ class AllAppAdapter(
 ) : RecyclerView.Adapter<AllAppAdapter.AppItemViewHolder>() {
 
     private lateinit var itemView: ItemAppBinding
-    private val mapSelectedApp = HashMap<String, Boolean>()
-    internal var count = 0
+    val mapSelectedApp = HashMap<String, Boolean>()
 
     fun updateSelectedPosition(selectedAppInfo: AppInfo, position: Int) {
         if (mapSelectedApp[selectedAppInfo.packageName] == null) {
@@ -31,7 +30,7 @@ class AllAppAdapter(
         }
         Log.e("Giang", "update: ${selectedAppInfo.packageName}")
         Log.e("Giang", "update: ${mapSelectedApp[selectedAppInfo.packageName]}")
-        notifyItemChanged(position)
+        notifyDataSetChanged()
     }
 
     fun updateAllPosition(isSelected: Boolean) {
@@ -57,7 +56,7 @@ class AllAppAdapter(
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return appList[oldItemPosition] == newList[newItemPosition]
+                return appList[oldItemPosition].packageName == newList[newItemPosition].packageName
             }
         })
 
@@ -103,9 +102,10 @@ class AllAppAdapter(
 
 class SlideOutRightItemAnimator : DefaultItemAnimator() {
     override fun animateRemove(holder: RecyclerView.ViewHolder): Boolean {
+        Log.e("GiangAnCut", "animateRemove: ${holder.itemView}")
         val view = holder.itemView
         view.animate()
-            .translationX(view.width.toFloat())
+            .translationX(view.width.toFloat() + 100f)
             .setDuration(300)
             .withEndAction {
                 dispatchRemoveFinished(holder)
@@ -114,7 +114,36 @@ class SlideOutRightItemAnimator : DefaultItemAnimator() {
         return true
     }
 
+    override fun animateAppearance(
+        viewHolder: RecyclerView.ViewHolder,
+        preLayoutInfo: ItemHolderInfo?,
+        postLayoutInfo: ItemHolderInfo
+    ): Boolean {
+        Log.e("GiangAnCut", "animateAppearance: ${viewHolder.itemView}")
+        return super.animateAppearance(viewHolder, preLayoutInfo, postLayoutInfo)
+    }
+
+    override fun animateDisappearance(
+        viewHolder: RecyclerView.ViewHolder,
+        preLayoutInfo: ItemHolderInfo,
+        postLayoutInfo: ItemHolderInfo?
+    ): Boolean {
+        Log.e("GiangAnCut", "animateDisappearance: ${viewHolder.itemView}")
+        return super.animateDisappearance(viewHolder, preLayoutInfo, postLayoutInfo)
+    }
+
+    override fun animateChange(
+        oldHolder: RecyclerView.ViewHolder,
+        newHolder: RecyclerView.ViewHolder,
+        preInfo: ItemHolderInfo,
+        postInfo: ItemHolderInfo
+    ): Boolean {
+        Log.e("GiangAnCut", "animateChange: ${oldHolder.itemView}")
+        return super.animateChange(oldHolder, newHolder, preInfo, postInfo)
+    }
+
     override fun animateAdd(holder: RecyclerView.ViewHolder): Boolean {
+        Log.e("GiangAnCut", "animateAdd: ${holder.itemView}")
         val view = holder.itemView
         view.translationX = view.width.toFloat()
         view.animate()
