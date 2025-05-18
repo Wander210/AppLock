@@ -55,12 +55,7 @@ class LockService : Service() {
 
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
-        usageStatsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        } else {
-            Log.e(TAG, "UsageStatsManager không được hỗ trợ trên thiết bị này")
-            return
-        }
+        usageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
 
         // Tải pattern từ SharedPreferences
         loadSavedPattern()
@@ -105,14 +100,11 @@ class LockService : Service() {
 
         // Chạy service ở chế độ foreground
         startForeground(NOTIFICATION_ID, notification)
+        startMonitoring()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            startMonitoring()
-        }
         return START_STICKY
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun startMonitoring() {
         handler.post(object : Runnable {
             override fun run() {
@@ -122,7 +114,6 @@ class LockService : Service() {
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private fun checkCurrentApp() {
         val currentTime = System.currentTimeMillis()
         val startTime = currentTime - TimeUnit.MINUTES.toMillis(1) // Lấy dữ liệu từ 1 phút trước
