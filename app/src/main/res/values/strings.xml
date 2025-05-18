@@ -59,5 +59,9 @@
     <string name="permission_notification">Your version device is android 13, please allow the app to access permission your notification!.</string>
     <string name="not_now">Not now</string>
     <string name="change_language">Change language</string>
+    <string name="go_to_setting">Go to setting</string>
+    <string name="usage_access_permission_napp_lock_needs_usage_access_permission_to_protect_your_privacy">Usage Access Permission\nApp Lock needs Usage Access permission to protect your privacy</string>
+    <string name="screen_overlay_permission_napp_lock_requires_the_screen_overlay_permission_to_display_lock_screen">Screen Overlay Permission\nApp Lock requires the Screen Overlay permission to display lock screen</string>
+    <string name="permission_required">Permission Required</string>
 
 </resources>

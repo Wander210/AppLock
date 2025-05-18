@@ -1,8 +1,10 @@
 package com.giang.applock20.screen.home
 
+import android.app.AlertDialog
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Shader
 import android.os.Build
@@ -12,21 +14,21 @@ import android.text.TextPaint
 import android.text.style.CharacterStyle
 import android.view.LayoutInflater
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.databinding.ActivityHomeBinding
+import com.giang.applock20.screen.dialog.PermissionDialog
 import com.giang.applock20.screen.setting.SettingActivity
 import com.giang.applock20.service.LockService
 import com.giang.applock20.util.PermissionUtils
 import com.google.android.material.tabs.TabLayout
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
-
-    private lateinit var permissionUtils: PermissionUtils
-
     override fun getViewBinding(layoutInflater: LayoutInflater): ActivityHomeBinding {
         return ActivityHomeBinding.inflate(layoutInflater)
     }
@@ -36,10 +38,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun setupView() {
-        permissionUtils = PermissionUtils(this)
-        // Yêu cầu các quyền cần thiết
-        checkAndRequestPermissions()
-        ContextCompat.startForegroundService(this, Intent(this, LockService::class.java))
+        checkAndRequestNotificationPermission()
 
         binding.apply {
             viewPager2.adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
@@ -50,15 +49,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                     updateTabLayoutTextColor(position)
                 }
             })
-        }
-    }
-
-    private fun checkAndRequestPermissions() {
-        if (!permissionUtils.checkUsageStatsPermission()) {
-            permissionUtils.requestUsageStatsPermission()
-        } else if (!permissionUtils.checkOverlayPermission()) {
-            // Kiểm tra quyền Overlay
-            permissionUtils.requestOverlayPermission()
         }
     }
 
@@ -125,25 +115,79 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
     }
 
-    private fun checkUsageStatsPermission(): Boolean {
-        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            appOps.unsafeCheckOpNoThrow(
-                AppOpsManager.OPSTR_GET_USAGE_STATS,
-                android.os.Process.myUid(),
-                packageName
-            )
+    // 2. Hàm gọi để kiểm tra và xin quyền:
+    fun checkAndRequestNotificationPermission() {
+        // Chỉ cần request trên Android 13+ (SDK 33)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    // Đã có quyền
+                    showDialogRequestPermission()
+                }
+                shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS) -> {
+                    // Nên giải thích cho người dùng vì sao cần quyền
+                    AlertDialog.Builder(this)
+                        .setTitle("Cho phép thông báo")
+                        .setMessage("Ứng dụng cần quyền gửi thông báo để giữ cho các ứng dụng của bạn luôn an toàn")
+                        .setPositiveButton("Đồng ý") { _, _ ->
+                            requestNotificationPermissionLauncher.launch(
+                                android.Manifest.permission.POST_NOTIFICATIONS
+                            )
+                        }
+                        .setNegativeButton("Hủy", null)
+                        .show()
+                }
+                else -> {
+                    // Chưa request lần nào
+                    requestNotificationPermissionLauncher.launch(
+                        android.Manifest.permission.POST_NOTIFICATIONS
+                    )
+                }
+            }
         } else {
-            appOps.checkOpNoThrow(
-                AppOpsManager.OPSTR_GET_USAGE_STATS,
-                android.os.Process.myUid(),
-                packageName
-            )
+            // Trên Android < 13 không cần request runtime
+            showDialogRequestPermission()
         }
-        return mode == AppOpsManager.MODE_ALLOWED
     }
 
-    private fun requestUsageStatsPermission() {
-        startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+    private val requestNotificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                showDialogRequestPermission()
+            } else {
+                Toast.makeText(this, "Quyền thông báo bị từ chối", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    private var permissionDialog: PermissionDialog? = null
+
+    private fun showDialogRequestPermission() {
+        if (PermissionUtils.isAllPermissisionRequested()) {
+            ContextCompat.startForegroundService(this, Intent(this, LockService::class.java))
+        } else {
+            permissionDialog = PermissionDialog()
+            permissionDialog?.show(supportFragmentManager, "rating_dialog")
+            permissionDialog?.onToggleUsageClick = {
+                PermissionUtils.requestUsageStatsPermission()
+            }
+            permissionDialog?.onToggleOverlayClick = {
+                PermissionUtils.requestOverlayPermission()
+            }
+            permissionDialog?.onGotoSettingClick = {
+                if (!PermissionUtils.checkUsageStatsPermission()) {
+                    PermissionUtils.requestUsageStatsPermission()
+                } else if (!PermissionUtils.checkOverlayPermission()) {
+                    PermissionUtils.requestOverlayPermission()
+                }
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        permissionDialog?.updateToggle()
     }
 }
