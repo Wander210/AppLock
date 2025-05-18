@@ -2,6 +2,7 @@ package com.giang.applock20.screen.home.all_app
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -11,43 +12,37 @@ import com.giang.applock20.R
 import com.giang.applock20.databinding.ItemAppBinding
 import com.giang.applock20.model.AppInfo
 import com.giang.applock20.util.AppInfoUtil
-import com.giang.applock20.util.AppInfoUtil.listAppInfo
 
 class AllAppAdapter(
     val context: Context,
     var appList: List<AppInfo>,
-    private val onItemClick: (AppInfo) -> Unit
+    private val onItemClick: (AppInfo, Int) -> Unit
 ) : RecyclerView.Adapter<AllAppAdapter.AppItemViewHolder>() {
 
     private lateinit var itemView: ItemAppBinding
-    internal var booleanArray = BooleanArray(appList.size)
+    private val mapSelectedApp = HashMap<String, Boolean>()
     internal var count = 0
-    private var lastClickTime = 0L
 
-    fun updateSelectedPosition(selectedAppInfo: AppInfo) {
-        for (i in appList.indices) {
-            if (appList[i].packageName == selectedAppInfo.packageName) {
-                if (!booleanArray[i]) {
-                    booleanArray[i] = true
-                    count++
-                } else {
-                    booleanArray[i] = false
-                    count--
-                }
-                notifyItemChanged(i)
-                break
-            }
+    fun updateSelectedPosition(selectedAppInfo: AppInfo, position: Int) {
+        if (mapSelectedApp[selectedAppInfo.packageName] == null) {
+            mapSelectedApp.put(selectedAppInfo.packageName, true)
+        } else {
+            mapSelectedApp.remove(selectedAppInfo.packageName)
         }
+        Log.e("Giang", "update: ${selectedAppInfo.packageName}")
+        Log.e("Giang", "update: ${mapSelectedApp[selectedAppInfo.packageName]}")
+        notifyItemChanged(position)
     }
 
     fun updateAllPosition(isSelected: Boolean) {
-        for (i in booleanArray.indices) {
-            if (isSelected) booleanArray[i] = true
-            else booleanArray[i] = false
-            notifyItemChanged(i)
+        if (isSelected) {
+            appList.forEach {
+                mapSelectedApp.put(it.packageName, true)
+            }
+        } else {
+            mapSelectedApp.clear()
         }
-        if (isSelected) count = booleanArray.size
-        else count = 0
+        notifyDataSetChanged()
     }
 
     fun setNewList(newList: List<AppInfo>) {
@@ -67,7 +62,6 @@ class AllAppAdapter(
         })
 
         appList = newList
-        booleanArray = BooleanArray(appList.size)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -87,22 +81,20 @@ class AllAppAdapter(
     inner class AppItemViewHolder(private val binding: ItemAppBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(app: AppInfo, position: Int) {
+            Log.e("Giang", "bind: ${app.name} - ${app.packageName}")
+            Log.e("Giang", "bind: ${mapSelectedApp[app.packageName]}")
             binding.apply {
                 imgAppIcon.setImageDrawable(AppInfoUtil.getAppIcon(context, app.packageName))
                 tvAppName.text = app.name
                 tvAppName.setTextColor(
-                    if (booleanArray[position]) Color.parseColor("#FFFFFF") else Color.parseColor("#131936")
+                    if (mapSelectedApp[app.packageName] != null) Color.parseColor("#FFFFFF") else Color.parseColor("#131936")
                 )
                 itemView.setBackgroundResource(
-                    if (booleanArray[position]) R.drawable.bg_selected_language_item else R.drawable.bg_language_item
+                    if (mapSelectedApp[app.packageName] != null) R.drawable.bg_selected_language_item else R.drawable.bg_language_item
                 )
                 // Global debounce to prevent multiple clicks across items
                 itemView.setOnClickListener {
-                    val currentTime = System.currentTimeMillis()
-                    if (currentTime - lastClickTime > 800) {
-                        lastClickTime = currentTime
-                        onItemClick(app)
-                    }
+                    onItemClick(app, position)
                 }
             }
         }
