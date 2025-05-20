@@ -1,9 +1,11 @@
 package com.giang.applock20.screen.home.locked_app
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,38 +17,32 @@ import com.giang.applock20.util.AppInfoUtil
 class LockedAppAdapter(
     val context: Context,
     var lockedAppList: List<AppInfo>,
-    private val onItemClick: (AppInfo) -> Unit
+    private val onItemClick: (AppInfo, Int) -> Unit
 ) : RecyclerView.Adapter<LockedAppAdapter.AppItemViewHolder>() {
 
     private lateinit var itemView: ItemAppBinding
-    internal var booleanArray = BooleanArray(lockedAppList.size)
-    internal var count = 0
-    private var lastClickTime = 0L
+    val mapSelectedApp = HashMap<String, Boolean>()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateSelectedPosition(selectedAppInfo: AppInfo) {
-        for (i in lockedAppList.indices) {
-            if (lockedAppList[i].packageName == selectedAppInfo.packageName) {
-                if (!booleanArray[i]) {
-                    booleanArray[i] = true
-                    count++
-                } else {
-                    booleanArray[i] = false
-                    count--
-                }
-                notifyItemChanged(i)
-                break
-            }
+        if (mapSelectedApp[selectedAppInfo.packageName] == null) {
+            mapSelectedApp[selectedAppInfo.packageName] = true
+        } else {
+            mapSelectedApp.remove(selectedAppInfo.packageName)
         }
+        notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateAllPosition(isSelected: Boolean) {
-        for (i in booleanArray.indices) {
-            if (isSelected) booleanArray[i] = true
-            else booleanArray[i] = false
-            notifyItemChanged(i)
+        if (isSelected) {
+            lockedAppList.forEach {
+                mapSelectedApp[it.packageName] = true
+            }
+        } else {
+            mapSelectedApp.clear()
         }
-        if (isSelected) count = booleanArray.size
-        else count = 0
+        notifyDataSetChanged()
     }
 
     fun setNewList(newList: List<AppInfo>) {
@@ -61,12 +57,11 @@ class LockedAppAdapter(
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return lockedAppList[oldItemPosition] == newList[newItemPosition]
+                return lockedAppList[oldItemPosition].packageName == newList[newItemPosition].packageName
             }
         })
 
         lockedAppList = newList
-        booleanArray = BooleanArray(lockedAppList.size)
         diffResult.dispatchUpdatesTo(this)
     }
 
@@ -90,18 +85,13 @@ class LockedAppAdapter(
                 imgAppIcon.setImageDrawable(AppInfoUtil.getAppIcon(context, app.packageName))
                 tvAppName.text = app.name
                 tvAppName.setTextColor(
-                    if (booleanArray[position]) Color.parseColor("#FFFFFF") else Color.parseColor("#131936")
+                    if (mapSelectedApp[app.packageName] != null) "#FFFFFF".toColorInt() else "#131936".toColorInt()
                 )
                 itemView.setBackgroundResource(
-                    if (booleanArray[position]) R.drawable.bg_selected_language_item else R.drawable.bg_language_item
+                    if (mapSelectedApp[app.packageName] != null) R.drawable.bg_selected_language_item else R.drawable.bg_language_item
                 )
-                // Global debounce to prevent multiple clicks across items
                 itemView.setOnClickListener {
-                    val currentTime = System.currentTimeMillis()
-                    if (currentTime - lastClickTime > 800) {
-                        lastClickTime = currentTime
-                        onItemClick(app)
-                    }
+                    onItemClick(app, position)
                 }
             }
         }

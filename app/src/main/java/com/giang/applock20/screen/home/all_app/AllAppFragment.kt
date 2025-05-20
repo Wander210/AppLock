@@ -2,12 +2,10 @@ package com.giang.applock20.screen.home.all_app
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseFragment
@@ -45,7 +43,7 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             allAppAdapter =
                 AllAppAdapter(requireContext(), listAppInfo) { clickedAppInfo, position ->
-                    allAppAdapter.updateSelectedPosition(clickedAppInfo, position)
+                    allAppAdapter.updateSelectedPosition(clickedAppInfo)
                     updateBtnLock()
                 }
             recyclerView.adapter = allAppAdapter

@@ -1,10 +1,11 @@
 package com.giang.applock20.screen.home.all_app
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -22,16 +23,17 @@ class AllAppAdapter(
     private lateinit var itemView: ItemAppBinding
     val mapSelectedApp = HashMap<String, Boolean>()
 
-    fun updateSelectedPosition(selectedAppInfo: AppInfo, position: Int) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateSelectedPosition(selectedAppInfo: AppInfo) {
         if (mapSelectedApp[selectedAppInfo.packageName] == null) {
             mapSelectedApp.put(selectedAppInfo.packageName, true)
         } else {
             mapSelectedApp.remove(selectedAppInfo.packageName)
         }
         notifyDataSetChanged()
-        notifyItemChanged(position)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun updateAllPosition(isSelected: Boolean) {
         if (isSelected) {
             appList.forEach {
@@ -85,7 +87,7 @@ class AllAppAdapter(
                 imgAppIcon.setImageDrawable(AppInfoUtil.getAppIcon(context, app.packageName))
                 tvAppName.text = app.name
                 tvAppName.setTextColor(
-                    if (mapSelectedApp[app.packageName] != null) Color.parseColor("#FFFFFF") else Color.parseColor("#131936")
+                    if (mapSelectedApp[app.packageName] != null) "#FFFFFF".toColorInt() else "#131936".toColorInt()
                 )
                 itemView.setBackgroundResource(
                     if (mapSelectedApp[app.packageName] != null) R.drawable.bg_selected_language_item else R.drawable.bg_language_item
@@ -111,34 +113,6 @@ class SlideOutRightItemAnimator : DefaultItemAnimator() {
             }
             .start()
         return true
-    }
-
-    override fun animateAppearance(
-        viewHolder: RecyclerView.ViewHolder,
-        preLayoutInfo: ItemHolderInfo?,
-        postLayoutInfo: ItemHolderInfo
-    ): Boolean {
-        Log.e("GiangAnCut", "animateAppearance: ${viewHolder.itemView}")
-        return super.animateAppearance(viewHolder, preLayoutInfo, postLayoutInfo)
-    }
-
-    override fun animateDisappearance(
-        viewHolder: RecyclerView.ViewHolder,
-        preLayoutInfo: ItemHolderInfo,
-        postLayoutInfo: ItemHolderInfo?
-    ): Boolean {
-        Log.e("GiangAnCut", "animateDisappearance: ${viewHolder.itemView}")
-        return super.animateDisappearance(viewHolder, preLayoutInfo, postLayoutInfo)
-    }
-
-    override fun animateChange(
-        oldHolder: RecyclerView.ViewHolder,
-        newHolder: RecyclerView.ViewHolder,
-        preInfo: ItemHolderInfo,
-        postInfo: ItemHolderInfo
-    ): Boolean {
-        Log.e("GiangAnCut", "animateChange: ${oldHolder.itemView}")
-        return super.animateChange(oldHolder, newHolder, preInfo, postInfo)
     }
 
     override fun animateAdd(holder: RecyclerView.ViewHolder): Boolean {
