@@ -10,12 +10,15 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
+import com.giang.applock20.constant.EXTRA_FROM_LANGUAGE
+import com.giang.applock20.constant.EXTRA_FROM_SPLASH
 import com.giang.applock20.custom.lock_pattern.PatternLockView
 import com.giang.applock20.custom.lock_pattern.PatternLockView.PatternViewMode
 import com.giang.applock20.custom.lock_pattern.listener.PatternLockViewListener
 import com.giang.applock20.databinding.ActivitySetLockPatternBinding
 import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.screen.home.HomeActivity
+import com.giang.applock20.screen.setting.SettingActivity
 import com.giang.applock20.util.*
 import com.google.gson.Gson
 
@@ -82,7 +85,6 @@ class SetLockPatternActivity : BaseActivity<ActivitySetLockPatternBinding>() {
             tvDrawAnUnlockPattern.setText(R.string.draw_pattern_again_to_confirm)
             btnReset.visibility = View.VISIBLE
             tvReset.visibility = View.VISIBLE
-
         }
     }
 
@@ -103,7 +105,8 @@ class SetLockPatternActivity : BaseActivity<ActivitySetLockPatternBinding>() {
             val gson = Gson()
             val json = gson.toJson(drawPattern)
             MyPreferences.write(MyPreferences.PREF_LOCK_PATTERN, json)
-            startActivity(Intent(this@SetLockPatternActivity, HomeActivity::class.java))
+            if (intent.getBooleanExtra(EXTRA_FROM_LANGUAGE, false)) startActivity(Intent(this, HomeActivity::class.java))
+            else startActivity(Intent(this, SettingActivity::class.java))
             finish()
         } else {
             AnimationUtil.setTextWrong(binding.patternLockView, binding.tvDrawAnUnlockPattern, tempPattern)

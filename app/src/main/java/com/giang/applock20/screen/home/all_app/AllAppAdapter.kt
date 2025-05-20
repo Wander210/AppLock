@@ -28,9 +28,8 @@ class AllAppAdapter(
         } else {
             mapSelectedApp.remove(selectedAppInfo.packageName)
         }
-        Log.e("Giang", "update: ${selectedAppInfo.packageName}")
-        Log.e("Giang", "update: ${mapSelectedApp[selectedAppInfo.packageName]}")
         notifyDataSetChanged()
+        notifyItemChanged(position)
     }
 
     fun updateAllPosition(isSelected: Boolean) {

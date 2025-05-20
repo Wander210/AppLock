@@ -115,7 +115,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
     }
 
-    // 2. Hàm gọi để kiểm tra và xin quyền:
+    // 2. LockService: Hàm gọi để kiểm tra và xin quyền:
     fun checkAndRequestNotificationPermission() {
         // Chỉ cần request trên Android 13+ (SDK 33)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

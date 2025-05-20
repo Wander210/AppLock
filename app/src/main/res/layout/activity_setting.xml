@@ -144,7 +144,7 @@
                 app:layout_constraintTop_toTopOf="@id/itemHidePatternDrawPath" />
 
             <View
-                android:id="@+id/btnChangePassword"
+                android:id="@+id/itemChangePassword"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/_6sdp"
@@ -161,9 +161,9 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_change_password"
-                app:layout_constraintBottom_toBottomOf="@id/btnChangePassword"
-                app:layout_constraintStart_toStartOf="@id/btnChangePassword"
-                app:layout_constraintTop_toTopOf="@id/btnChangePassword" />
+                app:layout_constraintBottom_toBottomOf="@id/itemChangePassword"
+                app:layout_constraintStart_toStartOf="@id/itemChangePassword"
+                app:layout_constraintTop_toTopOf="@id/itemChangePassword" />
 
 
             <TextView
@@ -174,9 +174,9 @@
                 android:text="@string/change_password"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
-                app:layout_constraintBottom_toBottomOf="@id/btnChangePassword"
+                app:layout_constraintBottom_toBottomOf="@id/itemChangePassword"
                 app:layout_constraintStart_toEndOf="@id/imgChangePassword"
-                app:layout_constraintTop_toTopOf="@id/btnChangePassword" />
+                app:layout_constraintTop_toTopOf="@id/itemChangePassword" />
 
             <TextView
                 android:id="@+id/tvOthers"
@@ -188,10 +188,10 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnChangePassword" />
+                app:layout_constraintTop_toBottomOf="@id/itemChangePassword" />
 
             <View
-                android:id="@+id/btnChangeLanguages"
+                android:id="@+id/itemChangeLanguages"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/_6sdp"
@@ -208,9 +208,9 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_change_language"
-                app:layout_constraintBottom_toBottomOf="@id/btnChangeLanguages"
-                app:layout_constraintStart_toStartOf="@id/btnChangeLanguages"
-                app:layout_constraintTop_toTopOf="@id/btnChangeLanguages" />
+                app:layout_constraintBottom_toBottomOf="@id/itemChangeLanguages"
+                app:layout_constraintStart_toStartOf="@id/itemChangeLanguages"
+                app:layout_constraintTop_toTopOf="@id/itemChangeLanguages" />
 
             <TextView
                 android:id="@+id/tvChangeLanguages"
@@ -221,9 +221,9 @@
                 android:text="@string/change_language"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_13ssp"
-                app:layout_constraintBottom_toBottomOf="@id/btnChangeLanguages"
+                app:layout_constraintBottom_toBottomOf="@id/itemChangeLanguages"
                 app:layout_constraintStart_toEndOf="@id/imgChangeLanguages"
-                app:layout_constraintTop_toTopOf="@id/btnChangeLanguages" />
+                app:layout_constraintTop_toTopOf="@id/itemChangeLanguages" />
 
 
             <View
@@ -235,7 +235,7 @@
                 app:layout_constraintDimensionRatio="328:55"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnChangeLanguages" />
+                app:layout_constraintTop_toBottomOf="@id/itemChangeLanguages" />
 
             <ImageView
                 android:id="@+id/imgShareWithFriends"

@@ -11,6 +11,7 @@ import com.giang.applock20.constant.EXTRA_FROM_SPLASH
 import com.giang.applock20.databinding.ActivitySettingBinding
 import com.giang.applock20.preference.MyPreferences
 import com.giang.applock20.screen.language.LanguageActivity
+import com.giang.applock20.screen.set_new_lock_pattern.SetLockPatternActivity
 
 class SettingActivity : BaseActivity<ActivitySettingBinding>() {
     override fun getViewBinding(layoutInflater: LayoutInflater): ActivitySettingBinding {
@@ -27,13 +28,19 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>() {
 
     override fun handleEvent() {
         binding.apply {
-            imgToggle.setOnClickListener {
+            itemHidePatternDrawPath.setOnClickListener {
                 MyPreferences.write(MyPreferences.IS_HIDE_DRAW_PATTERN, !MyPreferences.read(MyPreferences.IS_HIDE_DRAW_PATTERN, false))
                 updateSwitchHidePatternUI()
             }
 
-            btnChangeLanguages.setOnClickListener {
+            itemChangePassword.setOnClickListener {
+                startActivity(Intent(this@SettingActivity, SetLockPatternActivity::class.java))
+                finish()
+            }
+
+            itemChangeLanguages.setOnClickListener {
                 startActivity(Intent(this@SettingActivity, LanguageActivity::class.java))
+                finish()
             }
 
             itemShareWithFriends.setOnClickListener {

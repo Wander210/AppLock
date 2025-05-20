@@ -78,9 +78,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             startActivity(Intent(this, LanguageActivity::class.java).apply {
                 putExtra(EXTRA_FROM_SPLASH, true)
             })
-        } else {
-            startActivity(Intent(this, LockPatternActivity::class.java))
-        }
+        } else startActivity(Intent(this, LockPatternActivity::class.java))
         finish()
     }
 
