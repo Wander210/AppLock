@@ -2,8 +2,12 @@ package com.giang.applock20.screen.home.all_app
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseFragment
@@ -36,6 +40,7 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
     override fun initData() {}
 
     override fun setupView() {
+        updateComponentVisibility()
         binding.apply {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             allAppAdapter =
@@ -97,6 +102,7 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
                             listAppInfo.addAll(tempList)
                             //Update the btnLock
                             updateBtnLock()
+                            updateComponentVisibility()
                         }
                     }
                 }
@@ -104,14 +110,24 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
 
             cbSelectAll.setOnClickListener({
                 if (!checkBox) {
-                    cbSelectAll.setBackgroundResource(R.drawable.checkbox_checked)
+                    cbSelectAll.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.checkbox_checked
+                        )
+                    )
                     tvSelectOrRemove.text =
                         ContextCompat.getString(tvSelectOrRemove.context, R.string.remove_all)
                     checkBox = true
                     allAppAdapter.updateAllPosition(true)
                     updateBtnLock()
                 } else {
-                    cbSelectAll.setBackgroundResource(R.drawable.checkbox_unchecked)
+                    cbSelectAll.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.checkbox_unchecked
+                        )
+                    )
                     tvSelectOrRemove.text =
                         ContextCompat.getString(tvSelectOrRemove.context, R.string.select_all)
                     checkBox = false
@@ -119,6 +135,22 @@ class AllAppFragment : BaseFragment<FragmentAllAppsBinding>() {
                     updateBtnLock()
                 }
             })
+        }
+    }
+
+    fun updateComponentVisibility() {
+        binding.apply {
+            if(listAppInfo.isEmpty()) {
+                btnLock.visibility = INVISIBLE
+                tvLock.visibility = INVISIBLE
+                cbSelectAll.visibility = INVISIBLE
+                tvSelectOrRemove.visibility = INVISIBLE
+            } else {
+                btnLock.visibility = VISIBLE
+                tvLock.visibility = VISIBLE
+                cbSelectAll.visibility = VISIBLE
+                tvSelectOrRemove.visibility = VISIBLE
+            }
         }
     }
 

@@ -2,6 +2,8 @@ package com.giang.applock20.screen.home.locked_app
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +38,7 @@ class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
     override fun initData() {}
 
     override fun setupView() {
+        updateComponentVisibility()
         binding.apply {
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -101,6 +104,7 @@ class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
                     // Update the btnLock
                     lockedAppAdapter.count = 0
                     updateBtnLock()
+                    updateComponentVisibility()
                 }
 
             })
@@ -110,13 +114,23 @@ class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
                 if (currentTime - lastButtonClickTime > 1000) {
                     lastButtonClickTime = currentTime
                     if (!checkBox) {
-                        cbSelectAll.setBackgroundResource(R.drawable.checkbox_checked)
+                        cbSelectAll.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.checkbox_checked
+                            )
+                        )
                         tvSelectOrRemove.text = ContextCompat.getString(tvSelectOrRemove.context, R.string.remove_all)
                         checkBox = true
                         lockedAppAdapter.updateAllPosition(true)
                         updateBtnLock()
                     } else {
-                        cbSelectAll.setBackgroundResource(R.drawable.checkbox_unchecked)
+                        cbSelectAll.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.checkbox_unchecked
+                            )
+                        )
                         tvSelectOrRemove.text = ContextCompat.getString(tvSelectOrRemove.context, R.string.select_all)
                         checkBox = false
                         lockedAppAdapter.updateAllPosition(false)
@@ -127,15 +141,41 @@ class LockedAppFragment : BaseFragment<FragmentLockedAppsBinding>() {
         }
     }
 
+    fun updateComponentVisibility() {
+        binding.apply {
+            if(listLockedAppInfo.isEmpty()) {
+                btnLock.visibility = INVISIBLE
+                tvLock.visibility = INVISIBLE
+                cbSelectAll.visibility = INVISIBLE
+                tvSelectOrRemove.visibility = INVISIBLE
+            } else {
+                btnLock.visibility = VISIBLE
+                tvLock.visibility = VISIBLE
+                cbSelectAll.visibility = VISIBLE
+                tvSelectOrRemove.visibility = VISIBLE
+            }
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     fun updateBtnLock() {
         binding.apply {
             if (lockedAppAdapter.count != 0) {
-                btnLock.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.bg_active_button))
+                btnLock.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.bg_active_button
+                    )
+                )
                 tvLock.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
                 tvLock.text = "(${lockedAppAdapter.count}) Unlock"
             } else {
-                btnLock.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.bg_inactive_button))
+                btnLock.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.bg_inactive_button
+                    )
+                )
                 tvLock.setTextColor(ContextCompat.getColor(requireContext(), R.color.hint_text))
                 tvLock.text = "Unlock"
             }
