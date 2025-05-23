@@ -1,14 +1,13 @@
 package com.giang.applock20.screen.home
 
 import android.app.AlertDialog
-import android.app.AppOpsManager
-import android.content.Context
+import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Shader
 import android.os.Build
-import android.provider.Settings
 import android.text.SpannableString
 import android.text.TextPaint
 import android.text.style.CharacterStyle
@@ -22,10 +21,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.giang.applock20.R
 import com.giang.applock20.base.BaseActivity
 import com.giang.applock20.databinding.ActivityHomeBinding
+import com.giang.applock20.receiver.AppLockDeviceAdminReceiver
 import com.giang.applock20.screen.dialog.PermissionDialog
 import com.giang.applock20.screen.setting.SettingActivity
 import com.giang.applock20.service.LockService
-import com.giang.applock20.util.PermissionUtils
+import com.giang.applock20.util.PermissionUtil
 import com.google.android.material.tabs.TabLayout
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
@@ -34,12 +34,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun initData() {
-
+        checkAndRequestNotificationPermission()
     }
 
     override fun setupView() {
-        checkAndRequestNotificationPermission()
-
         binding.apply {
             viewPager2.adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -56,7 +54,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         binding.apply {
             tabLayout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    if(tab != null) viewPager2.currentItem = tab.position
+                    if (tab != null) viewPager2.currentItem = tab.position
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -80,8 +78,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                 resources.getColor(R.color.gradient_start, null),
                 resources.getColor(R.color.gradient_end, null)
             ) else
-                intArrayOf(Color.parseColor("#ACACAC"),
-                    Color.parseColor("#ACACAC"))
+                intArrayOf(
+                    Color.parseColor("#ACACAC"),
+                    Color.parseColor("#ACACAC")
+                )
             val tab = binding.tabLayout.getTabAt(i)
             val height = tab?.view?.height ?: 0
             val spannable = SpannableString(tab?.text)
@@ -117,71 +117,75 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     // 2. LockService: Hàm gọi để kiểm tra và xin quyền:
     fun checkAndRequestNotificationPermission() {
-        // Chỉ cần request trên Android 13+ (SDK 33)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             when {
+                //Đã cấp quyền notification
                 ContextCompat.checkSelfPermission(
                     this,
                     android.Manifest.permission.POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED -> {
-                    // Đã có quyền
                     showDialogRequestPermission()
                 }
+
+                //User từng từ chối cấp quyền
                 shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS) -> {
-                    // Nên giải thích cho người dùng vì sao cần quyền
                     AlertDialog.Builder(this)
-                        .setTitle("Cho phép thông báo")
-                        .setMessage("Ứng dụng cần quyền gửi thông báo để giữ cho các ứng dụng của bạn luôn an toàn")
-                        .setPositiveButton("Đồng ý") { _, _ ->
+                        .setTitle(getString(R.string.notification_permission_title))
+                        .setMessage(getString(R.string.notification_permission_message))
+                        .setPositiveButton(getString(R.string.agree)) { _, _ ->
                             requestNotificationPermissionLauncher.launch(
                                 android.Manifest.permission.POST_NOTIFICATIONS
                             )
                         }
-                        .setNegativeButton("Hủy", null)
+                        .setNegativeButton(getString(R.string.cancel), null)
                         .show()
                 }
+
+                //Hiển thị lần đầu
                 else -> {
-                    // Chưa request lần nào
                     requestNotificationPermissionLauncher.launch(
                         android.Manifest.permission.POST_NOTIFICATIONS
                     )
                 }
             }
-        } else {
-            // Trên Android < 13 không cần request runtime
-            showDialogRequestPermission()
-        }
+        } else showDialogRequestPermission()
     }
+
 
     private val requestNotificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                showDialogRequestPermission()
-            } else {
-                Toast.makeText(this, "Quyền thông báo bị từ chối", Toast.LENGTH_SHORT).show()
-            }
+            if (isGranted) showDialogRequestPermission()
+            else Toast.makeText(
+                this,
+                getString(R.string.notifications_disabled),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
     private var permissionDialog: PermissionDialog? = null
 
     private fun showDialogRequestPermission() {
-        if (PermissionUtils.isAllPermissisionRequested()) {
+        if (PermissionUtil.isAllPermissionRequested())
             ContextCompat.startForegroundService(this, Intent(this, LockService::class.java))
-        } else {
+        else {
             permissionDialog = PermissionDialog()
-            permissionDialog?.show(supportFragmentManager, "rating_dialog")
+            permissionDialog?.show(supportFragmentManager, "permission_dialog")
             permissionDialog?.onToggleUsageClick = {
-                PermissionUtils.requestUsageStatsPermission()
+                PermissionUtil.requestUsageStatsPermission()
             }
             permissionDialog?.onToggleOverlayClick = {
-                PermissionUtils.requestOverlayPermission()
+                PermissionUtil.requestOverlayPermission()
+            }
+            permissionDialog?.onToggleDeviceAdminClick = {
+                requestDeviceAdminPermission()
             }
             permissionDialog?.onGotoSettingClick = {
-                if (!PermissionUtils.checkUsageStatsPermission()) {
-                    PermissionUtils.requestUsageStatsPermission()
-                } else if (!PermissionUtils.checkOverlayPermission()) {
-                    PermissionUtils.requestOverlayPermission()
-                }
+                if (!PermissionUtil.checkUsageStatsPermission())
+                    PermissionUtil.requestUsageStatsPermission()
+                else if (!PermissionUtil.checkOverlayPermission())
+                    PermissionUtil.requestOverlayPermission()
+                else if (!PermissionUtil.checkDeviceAdminPermission())
+                    requestDeviceAdminPermission()
             }
         }
     }
@@ -190,4 +194,21 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         super.onResume()
         permissionDialog?.updateToggle()
     }
+
+    private fun requestDeviceAdminPermission() {
+        val intent = Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN).apply {
+            val componentName =
+                ComponentName(this@HomeActivity, AppLockDeviceAdminReceiver::class.java)
+            putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName)
+        }
+
+        requestDeviceAdminLauncher.launch(intent)
+    }
+
+    private val requestDeviceAdminLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+        }
+
+
 }

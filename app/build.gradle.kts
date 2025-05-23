@@ -50,9 +50,9 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation ("io.reactivex.rxjava3:rxjava:3.1.10")
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
-    implementation(platform("com.google.firebase:firebase-bom:31.2.0"))
-    implementation("com.google.firebase:firebase-analytics")
-    implementation ("pub.devrel:easypermissions:3.0.0")
+    
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     implementation("androidx.room:room-runtime:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
