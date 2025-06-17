@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5c822fa3-7af9-4cce-a111-9fec17a46990" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/java/com/giang/applock20/screen/setting/SettingActivity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/app_lock_banner.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/btn_next.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_app_lock.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_back.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_change_language.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_change_password.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_feedback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_fingerprint.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_hidden.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_icon_camouflage.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_key.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_lock_new_app.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_relock.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_share.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_star.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_trash_bin.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable/ic_vibration.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/layout/activity_setting.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AppLock/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AppLock/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/java/com/giang/applock20/screen/home/HomeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/AppLock/app/src/main/java/com/giang/applock20/screen/home/HomeActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/java/com/giang/applock20/screen/language/LanguageActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/AppLock/app/src/main/java/com/giang/applock20/screen/language/LanguageActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/java/com/giang/applock20/screen/splash/SplashActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/AppLock/app/src/main/java/com/giang/applock20/screen/splash/SplashActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/java/com/giang/applock20/screen/validate_pattern_lock/LockPatternActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/AppLock/app/src/main/java/com/giang/applock20/screen/validate_lock_pattern/LockPatternActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/bg_home_item_blue.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/english_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/french_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/german_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/hindi_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/ic_change_theme.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/ic_custom_lock_screen.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/italian_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/japanese_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/korean_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/polish_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/portugal_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/spanish_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/drawable-nodpi/vietnamese_ic.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/layout/activity_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/layout/activity_home.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/layout/activity_lock_pattern.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/layout/activity_lock_pattern.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/layout/item_language.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/layout/item_language.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AppLock/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AppLock/app/src/main/res/values/strings.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/AppLock" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2u1pUDe05CB2OoJB67zBBJzOJJ8" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Admin/AndroidStudioProjects/CleanWaterMangerment"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5c822fa3-7af9-4cce-a111-9fec17a46990" name="Changes" comment="" />
+      <created>1741425950807</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1741425950807</updated>
+    </task>
+    <servers />
+  </component>
+</project>
